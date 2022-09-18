@@ -3,6 +3,7 @@ package ClassPrj.app.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -13,12 +14,29 @@ public class Teacher extends User {
 
 	
 	@OneToMany(mappedBy = "creator")
-	List<ClassRoom> hasCreated;
+	private List<ClassRoom> hasCreated;
+	
+	@OneToMany(mappedBy = "uploadedBy")
+	private List<Document> uploaded;	
+	
+	
+	
+	public Teacher() {
+	}
 
 	public Teacher(Long id, String username, String password, String firstName, String lastName, List<Role> roles,
-			List<ClassRoom> hasCreated) {
+			List<ClassRoom> hasCreated, List<Document> uploaded) {
 		super(id, username, password, firstName, lastName, roles);
 		this.hasCreated = hasCreated;
+		this.uploaded = uploaded;
+	}
+
+	public List<Document> getUploaded() {
+		return uploaded;
+	}
+
+	public void setUploaded(List<Document> uploaded) {
+		this.uploaded = uploaded;
 	}
 
 	public List<ClassRoom> getHasCreated() {

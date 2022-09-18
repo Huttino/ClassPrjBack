@@ -17,8 +17,12 @@ public class Student extends User {
 			name = "student_classRoom",
 			joinColumns = @JoinColumn(name="student_id"),
 			inverseJoinColumns = @JoinColumn(name="classRoom_id"))
-	List<ClassRoom> subscribedTo;
+	private List<ClassRoom> subscribedTo;
 
+	public Student() {
+		super();
+	}
+	
 	public Student(Long id, String username, String password, String firstName, String lastName, List<Role> roles,
 			List<ClassRoom> subscribedTo) {
 		super(id, username, password, firstName, lastName, roles);

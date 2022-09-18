@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import ClassPrj.app.Model.ROLEVALUE;
+
 @Entity
 @Table(name="Role",uniqueConstraints = {
 		@UniqueConstraint(columnNames ="roleName")
@@ -16,16 +18,26 @@ public class Role {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	private Long id;
 	
 	@Column(name="roleName")
-	String roleName;
+	private String roleName;
+	
+	public Role() {
+		
+	}
+	
 	
 	public Role(Long id, String roleName) {
-		super();
 		this.id = id;
 		this.roleName = roleName;
 	}
+	
+	public Role(ROLEVALUE role) {
+		this.roleName=role.getRoleName();
+		this.id=role.getRoleId();
+	}
+
 
 	public Long getId() {
 		return id;
@@ -42,6 +54,13 @@ public class Role {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+
+
+	@Override
+	public String toString() {
+		return "Role="+ roleName ;
+	}
+	
 	
 	
 }
