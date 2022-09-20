@@ -2,6 +2,8 @@ package ClassPrj.app.Mapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -19,6 +21,7 @@ public class DocumentMapper {
 		toReturn.setNotes(toAdapt.getNotes());
 		toReturn.setTitle(StringUtils.cleanPath(toAdapt.getFile().getOriginalFilename()));
 		toReturn.setType(toAdapt.getFile().getContentType());
+		toReturn.setDateOfUpload(LocalDateTime.now(ZoneId.systemDefault()));
 		return toReturn;
 	}
 
@@ -28,6 +31,7 @@ public class DocumentMapper {
 		toReturn.setNotes(docu.getNotes());
 		toReturn.setTitle(docu.getTitle());
 		toReturn.setType(docu.getType());
+		toReturn.setDateOfUpdate(docu.getDateOfUpload());
 		toReturn.setUploadedBy(TeacherMapper.EntityToDTO(docu.getUploadedBy()));
 		toReturn.setUploadedTo(ClassRoomMapper.entityToDto(docu.getUploadedTo()));
 		return toReturn;

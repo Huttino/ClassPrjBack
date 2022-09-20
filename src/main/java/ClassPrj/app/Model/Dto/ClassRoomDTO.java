@@ -1,6 +1,7 @@
 package ClassPrj.app.Model.Dto;
 
 import java.util.List;
+import java.util.Map;
 
 public class ClassRoomDTO {
 	
@@ -8,11 +9,11 @@ public class ClassRoomDTO {
 	private Long id;
 	private String className;
 	private TeacherDTO creator;
-	private List<StudentDTO> members;
+	private Map<String, Long> members;
 	
 	
 	
-	public ClassRoomDTO(Long id, String className, TeacherDTO creator, List<StudentDTO> members) {
+	public ClassRoomDTO(Long id, String className, TeacherDTO creator, Map<String,Long> members) {
 		super();
 		this.id = id;
 		this.className = className;
@@ -44,10 +45,10 @@ public class ClassRoomDTO {
 	public void setCreator(TeacherDTO creator) {
 		this.creator = creator;
 	}
-	public List<StudentDTO> getMembers() {
+	public Map<String,Long> getMembers() {
 		return members;
 	}
-	public void setMembers(List<StudentDTO> members) {
+	public void setMembers(Map<String,Long> members) {
 		this.members = members;
 	}
 	

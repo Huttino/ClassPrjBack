@@ -2,9 +2,12 @@ package ClassPrj.app.Service.Impl;
 
 import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.domain.Student;
+import ClassPrj.app.domain.Teacher;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Repository.ClassRoomRepository;
 import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.ClassRoomService;
@@ -48,4 +51,14 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 		this.classRoomRepository.save(toSave);
 	}
 
+	public void delete(Long classRoomId,Long teacherId) {
+		ClassRoom toDelete=classRoomRepository.findById(classRoomId).get();
+		if(toDelete.getCreator().getId().equals(teacherId)) {
+			throw new ApiException("You can't delete a Classroom you didn't create");
+		}
+		else if(toDelete.getMembers()!=null && toDelete.getMembers().size()>0) {
+			throw new ApiException("you can only delete empty classrooms");
+		}
+		classRoomRepository.delete(toDelete);
+	}
 }

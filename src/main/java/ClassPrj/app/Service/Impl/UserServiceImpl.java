@@ -5,6 +5,7 @@ import java.net.URI;
 import javax.validation.Valid;
 
 import ClassPrj.app.Model.Request.UpdatePasswordRequest;
+import ClassPrj.app.Model.Request.UpdateUserRequest;
 import ClassPrj.app.domain.User;
 import ClassPrj.app.security.PrincipalUtils;
 import org.aspectj.weaver.NewConstructorTypeMunger;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Mapper.StudentMapper;
+import ClassPrj.app.Mapper.UserMapper;
 import ClassPrj.app.Model.AuthToken;
 import ClassPrj.app.Model.Request.SignUpRequest;
 import ClassPrj.app.Repository.StudentRepository;
@@ -78,6 +80,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean checkUserExcistance(String username) {
 		return userRepository.existsByUsername(username);
+	}
+
+
+	public void updateUser(UpdateUserRequest updateUserRequest) {
+		if(userRepository.existsByUsername(updateUserRequest.getUsername())) {
+			throw new ApiException("Username already in use");
+		}
+		Long userId= PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		User toUpdate=UserMapper.updateRequestToUser(updateUserRequest,userRepository.findById(userId).get());
+		userRepository.save(toUpdate);
 	}
 	
 }

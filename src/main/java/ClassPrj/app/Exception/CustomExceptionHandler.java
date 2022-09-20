@@ -21,7 +21,7 @@ public class CustomExceptionHandler {
 				e.getMessage(),
 				e,
 				HttpStatus.BAD_REQUEST,
-				ZonedDateTime.now(ZoneId.of("Z"))
+				ZonedDateTime.now(ZoneId.systemDefault())
 				);
 		return new ResponseEntity<>(ret,HttpStatus.BAD_REQUEST);
 	}

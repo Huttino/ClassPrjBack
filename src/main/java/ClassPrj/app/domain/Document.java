@@ -3,6 +3,8 @@ package ClassPrj.app.domain;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,6 +42,9 @@ public class Document {
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="dateofUpload")
+	private LocalDateTime dateOfUpload;
+	
 	@ManyToOne
 	@JoinColumn(name="uploadedBy")
 	private Teacher uploadedBy;
@@ -54,7 +59,7 @@ public class Document {
 	}
 
 	public Document(Long id, String title, String type, byte[] file, String notes, Teacher uploadedBy,
-			ClassRoom uploadedTo) throws IOException {
+			ClassRoom uploadedTo,LocalDateTime dateOfUpload) throws IOException {
 		this.id = id;
 		this.title = title;
 		this.type = type;
@@ -62,6 +67,7 @@ public class Document {
 		this.notes = notes;
 		this.uploadedBy = uploadedBy;
 		this.uploadedTo = uploadedTo;
+		this.dateOfUpload=dateOfUpload;
 	}
 
 	public Long getId() {
@@ -118,6 +124,14 @@ public class Document {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public LocalDateTime getDateOfUpload() {
+		return dateOfUpload;
+	}
+
+	public void setDateOfUpload(LocalDateTime dateOfUpload) {
+		this.dateOfUpload = dateOfUpload;
 	}
 	
 	

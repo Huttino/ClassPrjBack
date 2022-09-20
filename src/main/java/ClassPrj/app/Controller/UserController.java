@@ -3,6 +3,7 @@ package ClassPrj.app.Controller;
 
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Model.Request.UpdatePasswordRequest;
+import ClassPrj.app.Model.Request.UpdateUserRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
 import ClassPrj.app.Service.Impl.UserServiceImpl;
 import ClassPrj.app.Service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.lang.model.util.Elements;
+import javax.validation.Valid;
 
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
@@ -52,5 +54,11 @@ public class UserController {
 
         this.userServiceImpl.updatePassword(updatePasswordRequest);
         return ResponseEntity.ok().build();
+    }
+    
+    @PutMapping("")
+    public ResponseEntity<?> update(@RequestBody UpdateUserRequest updateUserRequest){
+    	this.userServiceImpl.updateUser(updateUserRequest);
+    	return ResponseEntity.ok().build();
     }
 }

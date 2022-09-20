@@ -1,5 +1,7 @@
 package ClassPrj.app.Model.Dto;
 
+import java.time.LocalDateTime;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentDTO {
@@ -9,6 +11,7 @@ public class DocumentDTO {
 	private String notes;
 	private TeacherDTO uploadedBy;
 	private ClassRoomDTO uploadedTo;
+	private LocalDateTime dateOfUpdate;
 	
 	
 	
@@ -18,7 +21,7 @@ public class DocumentDTO {
 
 
 	public DocumentDTO(Long id, String title, String type, String notes, TeacherDTO uploadedBy,
-			ClassRoomDTO uploadedTo) {
+			ClassRoomDTO uploadedTo,LocalDateTime dateOfUpdate) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -26,6 +29,7 @@ public class DocumentDTO {
 		this.notes = notes;
 		this.uploadedBy = uploadedBy;
 		this.uploadedTo = uploadedTo;
+		this.dateOfUpdate=dateOfUpdate;
 	}
 
 
@@ -97,6 +101,18 @@ public class DocumentDTO {
 
 	public void setUploadedTo(ClassRoomDTO uploadedTo) {
 		this.uploadedTo = uploadedTo;
+	}
+
+
+
+	public LocalDateTime getDateOfUpdate() {
+		return dateOfUpdate;
+	}
+
+
+
+	public void setDateOfUpdate(LocalDateTime dateOfUpdate) {
+		this.dateOfUpdate = dateOfUpdate;
 	}
 	
 	

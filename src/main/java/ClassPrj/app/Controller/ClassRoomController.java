@@ -38,6 +38,12 @@ public class ClassRoomController {
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
 		return ResponseEntity.ok().body(ClassRoomMapper.entityToDto(this.classRoomServiceImpl.create(nc.getClassname(),username)));
 	}
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable(name="id")Long id){
+		Long creatorId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		this.classRoomServiceImpl.delete(id,creatorId);
+		return ResponseEntity.ok().build();
+	}
 
 
 
