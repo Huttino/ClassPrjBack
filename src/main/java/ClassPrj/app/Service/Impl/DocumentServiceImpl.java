@@ -39,7 +39,8 @@ public class DocumentServiceImpl implements DocumentService {
 		this.classRoomRepository = classRoomRepository;
 		this.studentRepository=studentRepository;
 	}
-	
+
+	@Override
 	public DocumentDTO upload(UploadDocumentWithData toUpload,Long classId,String username) {
 		Document toSave=new Document();
 		try {
@@ -52,7 +53,8 @@ public class DocumentServiceImpl implements DocumentService {
 		DocumentDTO toReturn= DocumentMapper.entityToDTO( this.documentRepository.save(toSave));
 		return toReturn;	
 	}
-	
+
+	@Override
 	public void delete(Long documentId,String username) throws Exception {
 		Document toBeDeleted= this.documentRepository.findById(documentId).get();
 		if (toBeDeleted.getUploadedBy().getUsername().equals(username)) {
@@ -62,7 +64,8 @@ public class DocumentServiceImpl implements DocumentService {
 			throw new ApiException("Can't delete someone else's files");
 		}
 	}
-	
+
+	@Override
 	public byte[] getFile(Long id,String username) {
 		Student asker=this.studentRepository.findByUsername(username).get();
 		Document toReturn =this.documentRepository.findById(id).get();

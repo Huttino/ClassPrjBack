@@ -7,6 +7,7 @@ import java.net.http.HttpResponse;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import ClassPrj.app.Exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,7 +71,7 @@ public class DocumentController {
 			response.getOutputStream().write(this.documentServiceImpl.getFile(documentId,username));
 			response.flushBuffer();
 		} catch (IOException e) {
-			throw new RuntimeException("IOError writing file to output stream");
+			throw new ApiException("IOError writing file to output stream");
 		}
 		
 	}

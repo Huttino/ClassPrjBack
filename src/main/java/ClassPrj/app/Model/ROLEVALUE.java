@@ -3,7 +3,7 @@ package ClassPrj.app.Model;
 import org.springframework.security.access.event.PublicInvocationEvent;
 
 public enum ROLEVALUE {
-	STUDENT("STUDENT",1L),
+	STUDENT	("STUDENT",1L),
 	TEACHER("TEACHER",2L);
 	
 	private String RoleName;
