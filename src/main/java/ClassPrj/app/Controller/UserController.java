@@ -3,6 +3,7 @@ package ClassPrj.app.Controller;
 
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Mapper.TeacherMapper;
+import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.UpdatePasswordRequest;
 import ClassPrj.app.Model.Request.UpdateUserRequest;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @CrossOrigin(origins = "*",maxAge = 3600)
@@ -82,5 +85,13 @@ public class UserController {
             return ResponseEntity.ok(TeacherMapper.EntityToDTO(teacherServiceImpl.findById(detailImpl.getId()).get()));
         }
         else throw new ApiException("Error with your Registration");
+    }
+
+    @GetMapping("classRooms")
+    @Secured("STUDENT")
+    public ResponseEntity<List<ClassRoomDTO>> getMyClasses(){
+        Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+        List<ClassRoomDTO> toReturn= this.studentServiceimpl.getClasses(myId);
+        return ResponseEntity.ok(toReturn);
     }
 }

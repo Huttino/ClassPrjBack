@@ -9,8 +9,6 @@ public class DocumentDTO {
 	private String title;
 	private String type;
 	private String notes;
-	private TeacherDTO uploadedBy;
-	private ClassRoomDTO uploadedTo;
 	private LocalDateTime dateOfUpdate;
 	
 	
@@ -27,8 +25,6 @@ public class DocumentDTO {
 		this.title = title;
 		this.type = type;
 		this.notes = notes;
-		this.uploadedBy = uploadedBy;
-		this.uploadedTo = uploadedTo;
 		this.dateOfUpdate=dateOfUpdate;
 	}
 
@@ -79,29 +75,6 @@ public class DocumentDTO {
 		this.notes = notes;
 	}
 
-
-
-	public TeacherDTO getUploadedBy() {
-		return uploadedBy;
-	}
-
-
-
-	public void setUploadedBy(TeacherDTO uploadedBy) {
-		this.uploadedBy = uploadedBy;
-	}
-
-
-
-	public ClassRoomDTO getUploadedTo() {
-		return uploadedTo;
-	}
-
-
-
-	public void setUploadedTo(ClassRoomDTO uploadedTo) {
-		this.uploadedTo = uploadedTo;
-	}
 
 
 

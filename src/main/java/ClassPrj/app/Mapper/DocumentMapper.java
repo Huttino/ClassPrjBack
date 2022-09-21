@@ -32,8 +32,6 @@ public class DocumentMapper {
 		toReturn.setTitle(docu.getTitle());
 		toReturn.setType(docu.getType());
 		toReturn.setDateOfUpdate(docu.getDateOfUpload());
-		toReturn.setUploadedBy(TeacherMapper.EntityToDTO(docu.getUploadedBy()));
-		toReturn.setUploadedTo(ClassRoomMapper.entityToDto(docu.getUploadedTo()));
 		return toReturn;
 	}
 }
