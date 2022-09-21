@@ -1,8 +1,11 @@
 package ClassPrj.app.Mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import ClassPrj.app.Model.Dto.StudentDTO;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.SignUpRequest;
 import ClassPrj.app.domain.Role;
@@ -21,4 +24,23 @@ public class StudentMapper {
 		toReturn.setPassword(Password);
 		return toReturn;
 	}
+
+    public static StudentDTO EntityToDTO(Student toAdapt) {
+		StudentDTO toReturn=new StudentDTO();
+		toReturn.setUsername(toAdapt.getUsername());
+		toReturn.setFirstName(toAdapt.getFirstName());
+		toReturn.setLastName(toAdapt.getLastName());
+		toReturn.setId(toAdapt.getId());
+		List<String> authorities=new ArrayList();
+		toAdapt.getRoles().forEach(x->{
+			authorities.add(x.getRoleName());
+		});
+		toReturn.setAuthorithies(authorities);
+		Map<String,Long> memberOf=new HashMap();
+		toAdapt.getSubscribedTo().forEach(x->{
+			memberOf.put(x.getClassName(),x.getId());
+		});
+		toReturn.setMemberOf(memberOf);
+		return toReturn;
+    }
 }

@@ -1,7 +1,9 @@
 package ClassPrj.app.Mapper;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import ClassPrj.app.Model.Dto.TeacherDTO;
@@ -14,6 +16,11 @@ public class TeacherMapper {
 		toReturn.setUsername(teacher.getUsername());
 		toReturn.setFirstName(teacher.getFirstName());
 		toReturn.setLastName(teacher.getLastName());
+		List<String> authorities=new ArrayList();
+		teacher.getRoles().forEach(x->{
+			authorities.add(x.getRoleName());
+		});
+		toReturn.setAuthorithies(authorities);
 		Map<String,Long> mapToadd=new HashMap<>();
 		teacher.getHasCreated().forEach(c->{
 			mapToadd.put(c.getClassName(), c.getId());

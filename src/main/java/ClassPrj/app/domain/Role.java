@@ -9,12 +9,13 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import ClassPrj.app.Model.ROLEVALUE;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name="Role",uniqueConstraints = {
 		@UniqueConstraint(columnNames ="roleName")
 })
-public class Role {
+public class Role{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

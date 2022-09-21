@@ -6,15 +6,16 @@ public class UserDetailsDTO {
 	private Long id;
 	private String username;
 	private List<String> authorithies;
-	
+
+
 	public UserDetailsDTO(Long id, String username, List<String> authorithies) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.authorithies = authorithies;
 	}
-	
-	
+
+
 	public UserDetailsDTO() {
 	}
 	
@@ -37,7 +38,7 @@ public class UserDetailsDTO {
 	public void setAuthorithies(List<String> authorithies) {
 		this.authorithies = authorithies;
 	}
-	
-	
-	
+
+
+
 }
