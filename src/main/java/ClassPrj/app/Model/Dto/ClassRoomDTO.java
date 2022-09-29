@@ -10,11 +10,11 @@ public class ClassRoomDTO {
 	private String className;
 	private String creator;
 	private List<DocumentDTO> uploadedDocuments;
-	private Map<String, Long> members;
+	private List<StudentInClass> members;
 	
 	
 	
-	public ClassRoomDTO(Long id, String className, String creator, Map<String,Long> members,List<DocumentDTO> uploadedDocuments) {
+	public ClassRoomDTO(Long id, String className, String creator, List<StudentInClass> members,List<DocumentDTO> uploadedDocuments) {
 		super();
 		this.id = id;
 		this.className = className;
@@ -53,10 +53,10 @@ public class ClassRoomDTO {
 	public void setCreator(String creator) {
 		this.creator = creator;
 	}
-	public Map<String,Long> getMembers() {
+	public	List<StudentInClass> getMembers() {
 		return members;
 	}
-	public void setMembers(Map<String,Long> members) {
+	public void setMembers(List<StudentInClass> members) {
 		this.members = members;
 	}
 	

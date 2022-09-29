@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Dto.TeacherDTO;
 import ClassPrj.app.domain.Teacher;
 
@@ -21,9 +22,9 @@ public class TeacherMapper {
 			authorities.add(x.getRoleName());
 		});
 		toReturn.setAuthorithies(authorities);
-		Map<String,Long> mapToadd=new HashMap<>();
+		List<ClassRoomDTO> mapToadd=new ArrayList<>();
 		teacher.getHasCreated().forEach(c->{
-			mapToadd.put(c.getClassName(), c.getId());
+			mapToadd.add(ClassRoomMapper.entityToDto(c));
 		});
 		toReturn.setHasCreated(mapToadd);
 		return toReturn;

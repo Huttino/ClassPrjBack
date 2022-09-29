@@ -7,6 +7,7 @@ import java.util.Map;
 
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Dto.DocumentDTO;
+import ClassPrj.app.Model.Dto.StudentInClass;
 import ClassPrj.app.domain.ClassRoom;
 
 public class ClassRoomMapper {
@@ -15,9 +16,9 @@ public class ClassRoomMapper {
 		toReturn.setId(classRoom.getId());
 		toReturn.setCreator(classRoom.getCreator().getFirstName()+" "+classRoom.getCreator().getLastName());
 		toReturn.setClassName(classRoom.getClassName());
-		Map<String, Long> members=new HashMap<>();
+		List<StudentInClass> members=new ArrayList<>();
 		classRoom.getMembers().forEach(x->{
-			members.put(x.getUsername(), x.getId());
+			members.add(new StudentInClass(x.getId(),x.getUsername()));
 		});
 		List<DocumentDTO> toSetDocument=new ArrayList();
 		classRoom.getDocuments().forEach(x->{

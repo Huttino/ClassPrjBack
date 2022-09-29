@@ -30,8 +30,8 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<ClassRoomDTO> getClasses(Long myId) {
-        Student toGetClasses=this.studentRepository.findById(myId).get();
         List<ClassRoomDTO> toReturn=new ArrayList();
+        Student toGetClasses=this.studentRepository.findById(myId).get();
         toGetClasses.getSubscribedTo().forEach(x->{
             toReturn.add(ClassRoomMapper.entityToDto(x));
         });

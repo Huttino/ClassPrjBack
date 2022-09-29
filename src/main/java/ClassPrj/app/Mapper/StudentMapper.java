@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ClassPrj.app.Model.Dto.ClassInStudent;
 import ClassPrj.app.Model.Dto.StudentDTO;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.SignUpRequest;
@@ -36,9 +37,9 @@ public class StudentMapper {
 			authorities.add(x.getRoleName());
 		});
 		toReturn.setAuthorithies(authorities);
-		Map<String,Long> memberOf=new HashMap();
+		List<ClassInStudent> memberOf=new ArrayList<>();
 		toAdapt.getSubscribedTo().forEach(x->{
-			memberOf.put(x.getClassName(),x.getId());
+			memberOf.add(new ClassInStudent(x.getId(),x.getClassName()));
 		});
 		toReturn.setMemberOf(memberOf);
 		return toReturn;

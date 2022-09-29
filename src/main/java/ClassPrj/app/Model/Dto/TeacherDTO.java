@@ -6,9 +6,9 @@ import java.util.Map;
 public class TeacherDTO extends UserDTO {
 
 
-	private Map<String,Long> hasCreated;
+	private List<ClassRoomDTO> hasCreated;
 
-	public TeacherDTO(Long id, String username, String firstName, String lastName,List<String> authorities, Map<String, Long> hasCreated) {
+	public TeacherDTO(Long id, String username, String firstName, String lastName,List<String> authorities,List<ClassRoomDTO> hasCreated) {
 		super(id, username, firstName, lastName,authorities);
 		this.hasCreated = hasCreated;
 	}
@@ -16,11 +16,11 @@ public class TeacherDTO extends UserDTO {
 	public TeacherDTO() {
 	}
 
-	public Map<String, Long> getHasCreated() {
+	public List<ClassRoomDTO> getHasCreated() {
 		return hasCreated;
 	}
 
-	public void setHasCreated(Map<String, Long> hasCreated) {
+	public void setHasCreated(List<ClassRoomDTO> hasCreated) {
 		this.hasCreated = hasCreated;
 	}
 }
