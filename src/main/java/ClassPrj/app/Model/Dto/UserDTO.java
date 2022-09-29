@@ -8,13 +8,13 @@ public class UserDTO {
     private String firstName;
     private String lastName;
 
-    private List<String> authorithies;
-    public UserDTO(Long id, String username, String firstName, String lastName,List<String> authorithies) {
+    private List<String> authorities;
+    public UserDTO(Long id, String username, String firstName, String lastName,List<String> authorities) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.authorithies=authorithies;
+        this.authorities=authorities;
     }
 
     public UserDTO() {
@@ -52,11 +52,11 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public List<String> getAuthorithies() {
-        return authorithies;
+    public List<String> getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthorithies(List<String> authorithies) {
-        this.authorithies = authorithies;
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
     }
 }

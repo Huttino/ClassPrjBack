@@ -36,7 +36,7 @@ public class StudentMapper {
 		toAdapt.getRoles().forEach(x->{
 			authorities.add(x.getRoleName());
 		});
-		toReturn.setAuthorithies(authorities);
+		toReturn.setAuthorities(authorities);
 		List<ClassInStudent> memberOf=new ArrayList<>();
 		toAdapt.getSubscribedTo().forEach(x->{
 			memberOf.add(new ClassInStudent(x.getId(),x.getClassName()));

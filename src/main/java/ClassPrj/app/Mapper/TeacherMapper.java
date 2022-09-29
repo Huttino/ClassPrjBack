@@ -21,7 +21,7 @@ public class TeacherMapper {
 		teacher.getRoles().forEach(x->{
 			authorities.add(x.getRoleName());
 		});
-		toReturn.setAuthorithies(authorities);
+		toReturn.setAuthorities(authorities);
 		List<ClassRoomDTO> mapToadd=new ArrayList<>();
 		teacher.getHasCreated().forEach(c->{
 			mapToadd.add(ClassRoomMapper.entityToDto(c));

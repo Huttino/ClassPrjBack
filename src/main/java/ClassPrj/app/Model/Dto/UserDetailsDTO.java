@@ -5,14 +5,14 @@ import java.util.List;
 public class UserDetailsDTO {
 	private Long id;
 	private String username;
-	private List<String> authorithies;
+	private List<String> authorities;
 
 
-	public UserDetailsDTO(Long id, String username, List<String> authorithies) {
+	public UserDetailsDTO(Long id, String username, List<String> authorities) {
 		super();
 		this.id = id;
 		this.username = username;
-		this.authorithies = authorithies;
+		this.authorities = authorities;
 	}
 
 
@@ -33,10 +33,10 @@ public class UserDetailsDTO {
 		this.username = username;
 	}
 	public List<String> getAuthorithies() {
-		return authorithies;
+		return authorities;
 	}
 	public void setAuthorithies(List<String> authorithies) {
-		this.authorithies = authorithies;
+		this.authorities = authorithies;
 	}
 
 
