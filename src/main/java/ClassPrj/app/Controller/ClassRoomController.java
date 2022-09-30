@@ -21,7 +21,7 @@ import ClassPrj.app.security.PrincipalUtils;
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/api/class")
-@Secured("TEACHER")
+
 public class ClassRoomController {
 	
 	private final ClassRoomServiceImpl classRoomServiceImpl;
@@ -32,17 +32,27 @@ public class ClassRoomController {
 		this.classRoomServiceImpl=classRoomServiceImpl;
 		this.teacherServiceImpl=teacherServiceImpl;
 	}
-	
+
+	@Secured("TEACHER")
 	@PostMapping("")
 	public ResponseEntity<ClassRoomDTO> Create(@Valid @RequestBody NewClassRoomRequest nc){
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
 		return ResponseEntity.ok().body(ClassRoomMapper.entityToDto(this.classRoomServiceImpl.create(nc.getClassname(),username)));
 	}
+
+	@Secured("TEACHER")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable(name="id")Long id){
 		Long creatorId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		this.classRoomServiceImpl.delete(id,creatorId);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<ClassRoomDTO> getClass(@PathVariable(name="id")Long id){
+		Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		ClassRoomDTO toReturn=this.classRoomServiceImpl.getClassById(id,userId);
+		return ResponseEntity.ok(toReturn);
 	}
 
 

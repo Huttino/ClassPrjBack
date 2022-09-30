@@ -1,10 +1,13 @@
 package ClassPrj.app.Service.Impl;
 
+import ClassPrj.app.Mapper.ClassRoomMapper;
+import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.domain.Student;
 import ClassPrj.app.domain.Teacher;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import ClassPrj.app.Exception.ApiException;
@@ -51,6 +54,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 		this.classRoomRepository.save(toSave);
 	}
 
+	@Override
 	public void delete(Long classRoomId,Long teacherId) {
 		ClassRoom toDelete=classRoomRepository.findById(classRoomId).get();
 		if(toDelete.getCreator().getId().equals(teacherId)) {
@@ -60,5 +64,27 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 			throw new ApiException("you can only delete empty classrooms");
 		}
 		classRoomRepository.delete(toDelete);
+	}
+
+	@Override
+	public ClassRoomDTO getClassById(Long id,Long userId){
+		ClassRoom toAdapt=this.classRoomRepository.findById(id).get();
+		boolean found=false;
+		if(toAdapt.getCreator().getId()!=userId){
+			for(int i=0;i<toAdapt.getMembers().size();i++){
+				if(toAdapt.getMembers().get(i).getId()==userId){
+					found=true;
+				}
+			}
+		}
+		else{
+			found=true;
+		}
+		if(found){
+			return ClassRoomMapper.entityToDto(toAdapt);
+		}
+		else {
+			throw new ApiException("You don't have access to this class");
+		}
 	}
 }
