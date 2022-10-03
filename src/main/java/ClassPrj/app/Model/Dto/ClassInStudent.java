@@ -2,11 +2,11 @@ package ClassPrj.app.Model.Dto;
 
 public class ClassInStudent {
     public Long id;
-    public String ClassName;
+    public String className;
 
     public ClassInStudent(Long id,String className) {
         this.id = id;
-        ClassName = className;
+        className = className;
     }
 
     public Long getId() {
@@ -18,10 +18,10 @@ public class ClassInStudent {
     }
 
     public String getClassName() {
-        return ClassName;
+        return className;
     }
 
     public void setClassName(String className) {
-        ClassName = className;
+        className = className;
     }
 }

@@ -12,18 +12,22 @@ import ClassPrj.app.domain.ClassRoom;
 
 public class ClassRoomMapper {
 	public static ClassRoomDTO entityToDto(ClassRoom classRoom) {
-		ClassRoomDTO toReturn=new ClassRoomDTO();
+		ClassRoomDTO toReturn = new ClassRoomDTO();
 		toReturn.setId(classRoom.getId());
-		toReturn.setCreator(classRoom.getCreator().getFirstName()+" "+classRoom.getCreator().getLastName());
+		toReturn.setCreator(classRoom.getCreator().getFirstName() + " " + classRoom.getCreator().getLastName());
 		toReturn.setClassName(classRoom.getClassName());
-		List<StudentInClass> members=new ArrayList<>();
-		classRoom.getMembers().forEach(x->{
-			members.add(new StudentInClass(x.getId(),x.getUsername()));
-		});
-		List<DocumentDTO> toSetDocument=new ArrayList();
-		classRoom.getDocuments().forEach(x->{
-			toSetDocument.add(DocumentMapper.entityToDTO(x));
-		});
+		List<StudentInClass> members = new ArrayList<>();
+		if (classRoom.getMembers() != null) {
+			classRoom.getMembers().forEach(x -> {
+				members.add(new StudentInClass(x.getId(), x.getUsername()));
+			});
+		}
+		List<DocumentDTO> toSetDocument = new ArrayList();
+		if (classRoom.getDocuments() != null) {
+			classRoom.getDocuments().forEach(x -> {
+				toSetDocument.add(DocumentMapper.entityToDTO(x));
+			});
+		}
 		toReturn.setUploadedDocuments(toSetDocument);
 		toReturn.setMembers(members);
 		return toReturn;

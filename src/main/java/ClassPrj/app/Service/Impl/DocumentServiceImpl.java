@@ -1,7 +1,8 @@
 package ClassPrj.app.Service.Impl;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ import ClassPrj.app.Repository.DocumentRepository;
 import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.DocumentService;
+import ClassPrj.app.domain.ClassRoom;
 import ClassPrj.app.domain.Document;
 
 import ClassPrj.app.domain.Student;
+import ClassPrj.app.domain.Teacher;
+import ClassPrj.app.domain.User;
 
 
 @Service
@@ -41,17 +45,19 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public DocumentDTO upload(UploadDocumentWithData toUpload,Long classId,String username) {
-		Document toSave=new Document();
-		try {
-			toSave = DocumentMapper.RequestToEntity(toUpload);
-		} catch (IOException e) {
-			throw new ApiException("Erorr during the upload");
-		}
-		toSave.setUploadedBy(this.teacherRepository.findByUsername(username).get());
-		toSave.setUploadedTo(this.classRoomRepository.findById(classId).get());
-		DocumentDTO toReturn= DocumentMapper.entityToDTO( this.documentRepository.save(toSave));
-		return toReturn;	
+	public List<DocumentDTO> upload(UploadDocumentWithData toUpload,Long classId,String username) {
+		List<Document> toSave=DocumentMapper.RequestToEntity(toUpload);
+		Teacher uploader=this.teacherRepository.findByUsername(username).get();
+		ClassRoom uploadedTo=this.classRoomRepository.findById(classId).get();
+		toSave.forEach(x->{
+			x.setUploadedBy(uploader);
+			x.setUploadedTo(uploadedTo);
+		});
+		List<DocumentDTO> savedDocuments=new ArrayList<>();
+		toSave.forEach(x->{
+			savedDocuments.add(DocumentMapper.entityToDTO( this.documentRepository.save(x)));
+		});
+		return savedDocuments;	
 	}
 
 	@Override

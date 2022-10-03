@@ -3,6 +3,7 @@ package ClassPrj.app.Controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -47,7 +48,7 @@ public class DocumentController {
 	@Secured("TEACHER")
 	public ResponseEntity<?> upload(@ModelAttribute UploadDocumentWithData toUpload,@PathVariable ("id")Long classId){
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
-		DocumentDTO toReturn= this.documentServiceImpl.upload(toUpload,classId,username);
+		List<DocumentDTO> toReturn= this.documentServiceImpl.upload(toUpload,classId,username);
 		return ResponseEntity.ok(toReturn);
 	}
 	
@@ -64,7 +65,7 @@ public class DocumentController {
 	}
 	
 	@GetMapping("/{id}")
-	@Secured("STUDENT")
+	@Secured({"STUDENT","TEACHER"})
 	public void download(@PathVariable("id")Long documentId,HttpServletResponse response){
 		String username=PrincipalUtils.extractPrincipal(SecurityContextHolder.getContext().getAuthentication());
 		try {
