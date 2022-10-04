@@ -1,17 +1,8 @@
 package ClassPrj.app.Service.Impl;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Mapper.DocumentMapper;
-
 import ClassPrj.app.Model.Dto.DocumentDTO;
-
 import ClassPrj.app.Model.Request.UploadDocumentWithData;
 import ClassPrj.app.Repository.ClassRoomRepository;
 import ClassPrj.app.Repository.DocumentRepository;
@@ -20,10 +11,12 @@ import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.DocumentService;
 import ClassPrj.app.domain.ClassRoom;
 import ClassPrj.app.domain.Document;
-
-import ClassPrj.app.domain.Student;
 import ClassPrj.app.domain.Teacher;
-import ClassPrj.app.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -72,13 +65,18 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public byte[] getFile(Long id,String username) {
-		Student asker=this.studentRepository.findByUsername(username).get();
-		Document toReturn =this.documentRepository.findById(id).get();
-		if (asker.getSubscribedTo().contains(toReturn.getUploadedTo())){
-			return toReturn.getFile();
+	public byte[] getFile(Long id,Long userid) {
+		Document toReturn =this.documentRepository.findById(id).orElseThrow(()->{
+			throw new ApiException("document not Found");
+		});
+		if(!toReturn.getUploadedBy().getId().equals(userid)){
+			if(!toReturn.getUploadedTo().getMembers().stream().anyMatch(x->{
+				return x.getId()==userid;
+			})){
+				throw new ApiException("You don't have access to this document");
+			}
 		}
-		else throw new ApiException("You don't have access to this resource");
+		return toReturn.getFile();
 	}
 	
 }

@@ -67,9 +67,9 @@ public class DocumentController {
 	@GetMapping("/{id}")
 	@Secured({"STUDENT","TEACHER"})
 	public void download(@PathVariable("id")Long documentId,HttpServletResponse response){
-		String username=PrincipalUtils.extractPrincipal(SecurityContextHolder.getContext().getAuthentication());
+		Long userid=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		try {
-			response.getOutputStream().write(this.documentServiceImpl.getFile(documentId,username));
+			response.getOutputStream().write(this.documentServiceImpl.getFile(documentId,userid));
 			response.flushBuffer();
 		} catch (IOException e) {
 			throw new ApiException("IOError writing file to output stream");

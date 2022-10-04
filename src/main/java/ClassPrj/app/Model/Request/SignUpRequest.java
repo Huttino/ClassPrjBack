@@ -1,7 +1,5 @@
 package ClassPrj.app.Model.Request;
 
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +22,6 @@ public class SignUpRequest {
     
 	public SignUpRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public SignUpRequest(@NotNull @Email String username, @NotNull String password, @NotNull String firstName,
