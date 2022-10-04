@@ -24,7 +24,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
-@RequestMapping("/api/me")
+@RequestMapping("/api/me/")
 public class UserController {
 
     private ClassRoomServiceImpl classRoomServiceImpl;
@@ -40,15 +40,16 @@ public class UserController {
         this.teacherServiceImpl=teacherServiceImpl;
     }
     //toTest
-    @PutMapping("/classRoom/{id}")
+    @PutMapping("classRoom/{id}")
     @Secured("STUDENT")
     public ResponseEntity<?> join(@PathVariable(name="id") Long classRoomId){
         Long userId = PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
         this.classRoomServiceImpl.join(classRoomId,userId);
         return ResponseEntity.ok().build();
     }
-    //toTest
-    @DeleteMapping("/classRoom/{id}")
+    
+    
+    @DeleteMapping("classRoom/{id}")
     @Secured("STUDENT")
     public ResponseEntity<?> leave(@PathVariable(name="id") Long classRoomId){
         Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
@@ -58,13 +59,15 @@ public class UserController {
 
 
     //toTest
-    @PutMapping("/password/{id}")
+    @PutMapping("password/{id}")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
 
         this.userServiceImpl.updatePassword(updatePasswordRequest);
         return ResponseEntity.ok().build();
     }
     
+    
+    //toTest
     @PutMapping("")
     public ResponseEntity<?> update(@RequestBody UpdateUserRequest updateUserRequest){
     	this.userServiceImpl.updateUser(updateUserRequest);
@@ -87,7 +90,7 @@ public class UserController {
         else throw new ApiException("Error with your Registration");
     }
 
-    @GetMapping("classRooms")
+    @GetMapping("classRoom")
     @Secured("STUDENT")
     public ResponseEntity<List<ClassRoomDTO>> getMyClasses(){
         Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());

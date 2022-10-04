@@ -43,21 +43,23 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 		ClassRoom toSave = classRoomRepository.findById(classRoomId).get();
 		Student toAdd= studentRepository.findById(userId).get();
 		toSave.getMembers().add(toAdd);
-		classRoomRepository.save(toSave);
+		toAdd.getSubscribedTo().add(toSave);
+		studentRepository.save(toAdd);
 	}
 
 	@Override
 	public void leave(Long classRoomId,Long userId){
 		ClassRoom toSave = classRoomRepository.findById(classRoomId).get();
-		Student toAdd= studentRepository.findById(userId).get();
-		toSave.getMembers().remove(toAdd);
+		Student toRemove= studentRepository.findById(userId).get();
+		toSave.getMembers().remove(toRemove);
+		toRemove.getSubscribedTo().remove(toSave);
 		this.classRoomRepository.save(toSave);
 	}
 
 	@Override
 	public void delete(Long classRoomId,Long teacherId) {
 		ClassRoom toDelete=classRoomRepository.findById(classRoomId).get();
-		if(toDelete.getCreator().getId().equals(teacherId)) {
+		if(!toDelete.getCreator().getId().equals(teacherId)) {
 			throw new ApiException("You can't delete a Classroom you didn't create");
 		}
 		else if(toDelete.getMembers()!=null && toDelete.getMembers().size()>0) {
@@ -69,22 +71,6 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 	@Override
 	public ClassRoomDTO getClassById(Long id,Long userId){
 		ClassRoom toAdapt=this.classRoomRepository.findById(id).get();
-		boolean found=false;
-		if(toAdapt.getCreator().getId()!=userId){
-			for(int i=0;i<toAdapt.getMembers().size();i++){
-				if(toAdapt.getMembers().get(i).getId()==userId){
-					found=true;
-				}
-			}
-		}
-		else{
-			found=true;
-		}
-		if(found){
-			return ClassRoomMapper.entityToDto(toAdapt);
-		}
-		else {
-			throw new ApiException("You don't have access to this class");
-		}
+		return ClassRoomMapper.entityToDto(toAdapt);
 	}
 }
