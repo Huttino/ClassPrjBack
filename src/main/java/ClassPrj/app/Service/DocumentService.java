@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DocumentService {
 
-    public List<DocumentDTO> upload(UploadDocumentWithData toUpload, Long classId, String username);
-    public void delete(Long documentId,String username)throws Exception;
-    public byte[] getFile(Long id,Long userid);
+    List<DocumentDTO> upload(UploadDocumentWithData toUpload, Long classId, String username);
+    void delete(Long documentId,String username);
+    byte[] getFile(Long id,Long userid);
 }

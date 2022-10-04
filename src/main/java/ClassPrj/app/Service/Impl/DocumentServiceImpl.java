@@ -54,7 +54,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public void delete(Long documentId,String username) throws Exception {
+	public void delete(Long documentId,String username) {
 		Document toBeDeleted= this.documentRepository.findById(documentId).get();
 		if (toBeDeleted.getUploadedBy().getUsername().equals(username)) {
 			this.documentRepository.delete(toBeDeleted);
@@ -70,8 +70,8 @@ public class DocumentServiceImpl implements DocumentService {
 			throw new ApiException("document not Found");
 		});
 		if(!toReturn.getUploadedBy().getId().equals(userid)){
-			if(!toReturn.getUploadedTo().getMembers().stream().anyMatch(x->{
-				return x.getId()==userid;
+			if(toReturn.getUploadedTo().getMembers().stream().noneMatch(x->{
+				return x.getId().equals(userid);
 			})){
 				throw new ApiException("You don't have access to this document");
 			}
