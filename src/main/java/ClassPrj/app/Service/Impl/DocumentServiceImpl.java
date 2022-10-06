@@ -45,6 +45,7 @@ public class DocumentServiceImpl implements DocumentService {
         toSave.forEach(x->{
             x.setUploadedBy(uploader);
             x.setUploadedTo(uploadedTo);
+            x.setNotes(toUpload.getNotes());
         });
         List<DocumentDTO> savedDocuments=new ArrayList<>();
         toSave.forEach(x->{

@@ -1,20 +1,19 @@
 package ClassPrj.app.Service.Impl;
 
+import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
-import ClassPrj.app.Repository.StudentRepository;
-import ClassPrj.app.domain.Student;
-import ClassPrj.app.domain.Teacher;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Service;
-
-import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Repository.ClassRoomRepository;
+import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.ClassRoomService;
 import ClassPrj.app.domain.ClassRoom;
+import ClassPrj.app.domain.Student;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ClassRoomServiceImpl implements ClassRoomService {
@@ -72,5 +71,18 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 	public ClassRoomDTO getClassById(Long id,Long userId){
 		ClassRoom toAdapt=this.classRoomRepository.findById(id).get();
 		return ClassRoomMapper.entityToDto(toAdapt);
+	}
+
+	@Override
+	public List<ClassRoomDTO> getAllClass() {
+		List<ClassRoomDTO> toReturn=new ArrayList();
+		List<ClassRoom> classRoomList=this.classRoomRepository.findAll();
+		if(classRoomList!=null&&!classRoomList.isEmpty())
+		classRoomList.forEach(
+				x->{
+					toReturn.add(ClassRoomMapper.entityToDto(x));
+				}
+		);
+		return toReturn;
 	}
 }

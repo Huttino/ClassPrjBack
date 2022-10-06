@@ -1,22 +1,19 @@
 package ClassPrj.app.Controller;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import ClassPrj.app.security.UserDetailImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-
 import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
 import ClassPrj.app.Service.Impl.TeacherServiceImpl;
 import ClassPrj.app.security.PrincipalUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
@@ -52,6 +49,12 @@ public class ClassRoomController {
 	public ResponseEntity<ClassRoomDTO> getClass(@PathVariable(name="id")Long id){
 		Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		ClassRoomDTO toReturn=this.classRoomServiceImpl.getClassById(id,userId);
+		return ResponseEntity.ok(toReturn);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<List<ClassRoomDTO>> getAllClass(){
+		List<ClassRoomDTO> toReturn=this.classRoomServiceImpl.getAllClass();
 		return ResponseEntity.ok(toReturn);
 	}
 
