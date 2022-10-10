@@ -1,12 +1,7 @@
 package ClassPrj.app.domain;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name="Student")
@@ -23,9 +18,9 @@ public class Student extends User {
 		super();
 	}
 	
-	public Student(Long id, String username, String password, String firstName, String lastName, List<Role> roles,
+	public Student(Long id, String username, String password, String firstName, String lastName, Role role,
 			List<ClassRoom> subscribedTo) {
-		super(id, username, password, firstName, lastName, roles);
+		super(id, username, password, firstName, lastName, role);
 		this.subscribedTo = subscribedTo;
 	}
 

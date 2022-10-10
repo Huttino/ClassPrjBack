@@ -22,9 +22,9 @@ public class Teacher extends User {
 	public Teacher() {
 	}
 
-	public Teacher(Long id, String username, String password, String firstName, String lastName, List<Role> roles,
+	public Teacher(Long id, String username, String password, String firstName, String lastName, Role role,
 			List<ClassRoom> hasCreated, List<Document> uploaded) {
-		super(id, username, password, firstName, lastName, roles);
+		super(id, username, password, firstName, lastName, role);
 		this.hasCreated = hasCreated;
 		this.uploaded = uploaded;
 	}

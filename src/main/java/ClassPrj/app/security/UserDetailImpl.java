@@ -1,15 +1,13 @@
 package ClassPrj.app.security;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.management.loading.PrivateClassLoader;
-
+import ClassPrj.app.domain.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ClassPrj.app.domain.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class UserDetailImpl implements UserDetails  {
 	
@@ -33,9 +31,8 @@ public class UserDetailImpl implements UserDetails  {
 	}
 
 	public static UserDetailImpl build(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
-
+        List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
         return new UserDetailImpl(user.getId(), user.getUsername(), user.getPassword(), authorities);
     }
 

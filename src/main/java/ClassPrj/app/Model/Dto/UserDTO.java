@@ -1,20 +1,18 @@
 package ClassPrj.app.Model.Dto;
 
-import java.util.List;
-
 public class UserDTO {
     private Long id;
     private String username;
     private String firstName;
     private String lastName;
 
-    private List<String> authorities;
-    public UserDTO(Long id, String username, String firstName, String lastName,List<String> authorities) {
+    private String authority;
+    public UserDTO(Long id, String username, String firstName, String lastName,String authority) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.authorities=authorities;
+        this.authority=authority;
     }
 
     public UserDTO() {
@@ -52,11 +50,11 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public List<String> getAuthorities() {
-        return authorities;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setAuthorities(List<String> authorities) {
-        this.authorities = authorities;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 }

@@ -5,8 +5,8 @@ import java.util.List;
 public class StudentDTO extends UserDTO {
 	public List<ClassInStudent> memberOf;
 
-	public StudentDTO(Long id, String username, String firstName, String lastName, List<String> authorities, List<ClassInStudent> memberOf) {
-		super(id, username, firstName, lastName,authorities);
+	public StudentDTO(Long id, String username, String firstName, String lastName, String authority, List<ClassInStudent> memberOf) {
+		super(id, username, firstName, lastName,authority);
 		this.memberOf = memberOf;
 	}
 

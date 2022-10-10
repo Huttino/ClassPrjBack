@@ -7,8 +7,8 @@ public class TeacherDTO extends UserDTO {
 
 	private List<ClassRoomDTO> hasCreated;
 
-	public TeacherDTO(Long id, String username, String firstName, String lastName,List<String> authorities,List<ClassRoomDTO> hasCreated) {
-		super(id, username, firstName, lastName,authorities);
+	public TeacherDTO(Long id, String username, String firstName, String lastName,String authority,List<ClassRoomDTO> hasCreated) {
+		super(id, username, firstName, lastName,authority);
 		this.hasCreated = hasCreated;
 	}
 

@@ -1,7 +1,6 @@
 package ClassPrj.app.domain;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -9,7 +8,7 @@ public class User {
 
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name="username")
@@ -24,12 +23,9 @@ public class User {
 	@Column(name="lastName") 
 	private String lastName;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(
-		name="user_role",
-		joinColumns = @JoinColumn (name="user_id"),
-		inverseJoinColumns = @JoinColumn(name="role_id"))
-	private List<Role> roles;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "Role_Id")
+	private Role role;
 	
 	
 	
@@ -37,14 +33,14 @@ public class User {
 	public User() {
 	}
 
-	public User(Long id, String username, String password, String firstName, String lastName, List<Role> roles) {
+	public User(Long id, String username, String password, String firstName, String lastName, Role role) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.roles = roles;
+		this.role = role;
 	}
 
 	public Long getId() {
@@ -87,18 +83,18 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public List<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", roles=" + roles + "]";
+				+ ", lastName=" + lastName + ", roles=" + role + "]";
 	}
 	
 	
