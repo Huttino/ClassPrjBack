@@ -14,7 +14,7 @@ public class ClassRoom {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "name")
+	@Column(name = "name",nullable = false)
 	private String className;
 	@ManyToOne(cascade=CascadeType.DETACH)
 	@JoinColumn( name="creator_id",nullable = false)

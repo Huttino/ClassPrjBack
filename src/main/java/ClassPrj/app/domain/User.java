@@ -11,20 +11,20 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="username")
+	@Column(name="username",nullable = false)
 	private String username;
 	
-	@Column(name="password")
+	@Column(name="password",nullable = false)
 	private String password;
 	
-	@Column(name="firstName") 
+	@Column(name="firstName",nullable = false)
 	private String firstName;
 	
-	@Column(name="lastName") 
+	@Column(name="lastName",nullable = false)
 	private String lastName;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "Role_Id")
+	@JoinColumn(name = "Role_Id",nullable = false)
 	private Role role;
 	
 	

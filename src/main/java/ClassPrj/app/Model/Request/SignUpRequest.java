@@ -1,21 +1,25 @@
 package ClassPrj.app.Model.Request;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 public class SignUpRequest {
 
+	@NotEmpty
 	@NotNull
     @Email
     private String username;
 
-    @NotNull
+    @NotEmpty
+	@NotNull
     private String password;
     
-    @NotNull
+    @NotEmpty
+	@NotNull
     private String firstName;
     
-    @NotNull
+    @NotEmpty
+	@NotNull
     private String lastName;
 
     
@@ -24,8 +28,11 @@ public class SignUpRequest {
 		super();
 	}
 
-	public SignUpRequest(@NotNull @Email String username, @NotNull String password, @NotNull String firstName,
-			@NotNull String lastName) {
+	public SignUpRequest(
+			String username,
+			String password,
+			String firstName,
+			String lastName) {
 		super();
 		this.username = username;
 		this.password = password;

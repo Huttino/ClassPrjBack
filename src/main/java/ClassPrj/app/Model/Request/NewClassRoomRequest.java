@@ -1,12 +1,18 @@
 package ClassPrj.app.Model.Request;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class NewClassRoomRequest {
+	@NotEmpty
+	@NotNull
 	private String classname;
 	
 	public NewClassRoomRequest() {
 	}
 
-	public NewClassRoomRequest(String classname) {
+	public NewClassRoomRequest(
+			String classname) {
 		super();
 		this.classname = classname;
 	}

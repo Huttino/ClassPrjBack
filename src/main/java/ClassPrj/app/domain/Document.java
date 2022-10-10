@@ -1,17 +1,8 @@
 package ClassPrj.app.domain;
 
+import javax.persistence.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 
 @Entity
@@ -22,13 +13,13 @@ public class Document {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="title")
+	@Column(name="title",nullable = false)
 	private String title;
 	
-	@Column(name="type")
+	@Column(name="type",nullable = false)
 	private String type;
 	
-	@Column (name="file")
+	@Column (name="file",nullable = false)
 	@Lob
 	private byte[] file;
 	
@@ -39,11 +30,11 @@ public class Document {
 	private LocalDateTime dateOfUpload;
 	
 	@ManyToOne
-	@JoinColumn(name="uploadedBy")
+	@JoinColumn(name="uploadedBy",nullable = false)
 	private Teacher uploadedBy;
 	
 	@ManyToOne
-	@JoinColumn(name="ClassId")
+	@JoinColumn(name="ClassId",nullable = false)
 	private ClassRoom uploadedTo;
 
 

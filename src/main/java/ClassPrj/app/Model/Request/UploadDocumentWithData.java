@@ -1,11 +1,9 @@
 package ClassPrj.app.Model.Request;
 
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import java.util.List;
 
 public class UploadDocumentWithData {
 	
@@ -14,7 +12,9 @@ public class UploadDocumentWithData {
 	private String notes;
 	
 	
-	public UploadDocumentWithData(@NotNull List<MultipartFile> file, String notes) {
+	public UploadDocumentWithData(
+			List<MultipartFile> file,
+			String notes) {
 		super();
 		this.file = file;
 		this.notes = notes;

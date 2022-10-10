@@ -1,17 +1,24 @@
 package ClassPrj.app.Model.Request;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.lang.Nullable;
 
 public class UpdateUserRequest {
 	@Email
-	@Nullable
+	@NotNull
+	@NotEmpty
 	private String username;
+	@NotNull
+	@NotEmpty
 	private String firstName;
+	@NotNull
+	@NotEmpty
 	private String lastName;
-	public UpdateUserRequest(String username, String firstName, String lastName) {
+	public UpdateUserRequest(
+			String username,
+			String firstName,
+			String lastName) {
 		super();
 		this.username = username;
 		this.firstName = firstName;
