@@ -5,6 +5,7 @@ import ClassPrj.app.Repository.UserRepository;
 import ClassPrj.app.domain.User;
 import ClassPrj.app.security.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> user=this.userRepository.findByUsername(username);
-		if(user.isEmpty())throw new ApiException("User not found");
+		if(user.isEmpty())throw new ApiException("User not found", HttpStatus.NOT_FOUND.value());
 		return UserDetailImpl.build(user.get());
 	}
 

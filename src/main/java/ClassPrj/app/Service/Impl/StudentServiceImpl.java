@@ -9,6 +9,7 @@ import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.Service.StudentService;
 import ClassPrj.app.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class StudentServiceImpl implements StudentService {
 
     public StudentDTO getStudent(Long id){
         Optional<Student> toAdapt=this.studentRepository.findById(id);
-        if(toAdapt.isEmpty())throw new ApiException("Student not found");
+        if(toAdapt.isEmpty())throw new ApiException("Student not found", HttpStatus.NOT_FOUND.value());
         return StudentMapper.EntityToDTO(toAdapt.get());
     }
 
@@ -34,7 +35,7 @@ public class StudentServiceImpl implements StudentService {
     public List<ClassRoomDTO> getClasses(Long myId) {
         List<ClassRoomDTO> toReturn=new ArrayList<>();
         Optional<Student> toGetClasses=this.studentRepository.findById(myId);
-        if(toGetClasses.isEmpty())throw new ApiException("Student not found");
+        if(toGetClasses.isEmpty())throw new ApiException("Student not found",HttpStatus.NOT_FOUND.value());
         toGetClasses.get().getSubscribedTo().forEach(x-> toReturn.add(ClassRoomMapper.entityToDto(x)));
         return toReturn;
     }

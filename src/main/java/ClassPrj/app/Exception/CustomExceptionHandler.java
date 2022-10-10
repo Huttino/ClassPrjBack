@@ -17,9 +17,7 @@ public class CustomExceptionHandler {
 	@ExceptionHandler({ApiException.class})
 	public ResponseEntity<Object> usernameAlreadyExists(ApiException e){
 		ApiExceptionReturn ret=new ApiExceptionReturn(
-				e.getMessage(),
 				e,
-				HttpStatus.BAD_REQUEST,
 				ZonedDateTime.now(ZoneId.systemDefault())
 				);
 		return new ResponseEntity<>(ret,HttpStatus.BAD_REQUEST);

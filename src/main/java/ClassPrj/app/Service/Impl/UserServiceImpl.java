@@ -13,6 +13,7 @@ import ClassPrj.app.domain.Student;
 import ClassPrj.app.domain.User;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public URI signUp(@Valid SignUpRequest request) {
 		if(checkUserExistence(request.getUsername())){
-			throw new ApiException("Username Already in Use");
+			throw new ApiException("Username Already in Use",HttpStatus.CONFLICT.value());
 		}
 		Student toSave=StudentMapper.SignUpRequestToStudent(request, passwordEncoder.encode(request.getPassword()));
 		this.studentRepository.save(toSave);
@@ -58,14 +59,14 @@ public class UserServiceImpl implements UserService {
 		String password=PrincipalUtils.extractPrincipalObject(SecurityContextHolder.getContext().getAuthentication()).getPassword();
 		System.out.println(password);
 		if(!updatePasswordRequest.confirmPassword()){
-			throw new ApiException("new Passwords don't match");
+			throw new ApiException("new Passwords don't match",HttpStatus.BAD_REQUEST.value());
 		}
 		else if (!passwordEncoder.encode(updatePasswordRequest.getOldPassword()).equals(password)){
-			throw new ApiException("Wrong old Password");
+			throw new ApiException("Wrong old Password",HttpStatus.BAD_REQUEST.value());
 		}
 		else{
 			Optional<User> user=userRepository.findById(PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext()));
-			if(user.isEmpty())throw new ApiException("User not found");
+			if(user.isEmpty())throw new ApiException("User not found",HttpStatus.NOT_FOUND.value());
 			user.get().setPassword(passwordEncoder.encode(updatePasswordRequest.getNewPassword()));
 			userRepository.save(user.get());
 		}
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
 	public void updateUser(UpdateUserRequest updateUserRequest) {
 		if(userRepository.existsByUsername(updateUserRequest.getUsername())) {
-			throw new ApiException("Username already in use");
+			throw new ApiException("Username already in use", HttpStatus.CONFLICT.value());
 		}
 		Long userId= PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		userRepository.findById(userId).ifPresent((x)-> userRepository.save(UserMapper.updateRequestToUser(updateUserRequest,x)));

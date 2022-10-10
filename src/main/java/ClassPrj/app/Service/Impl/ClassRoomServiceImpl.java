@@ -11,6 +11,7 @@ import ClassPrj.app.domain.ClassRoom;
 import ClassPrj.app.domain.Student;
 import ClassPrj.app.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,17 +38,17 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 		Optional<Teacher> optional=this.teacherRepository.findByUsername(creator);
 		if(optional.isPresent())
 		toSave.setCreator(optional.get());
-		else throw new ApiException("Teacher not Found");
+		else throw new ApiException("Teacher not Found",HttpStatus.NOT_FOUND.value());
 		return this.classRoomRepository.save(toSave);
 	}
 
 	@Override
 	public void join(Long classRoomId,Long userId){
 		Optional<ClassRoom> optionalToSave = classRoomRepository.findById(classRoomId);
-		if (optionalToSave.isEmpty()) throw new ApiException("ClassRoom not found");
+		if (optionalToSave.isEmpty()) throw new ApiException("ClassRoom not found",HttpStatus.NOT_FOUND.value());
 		ClassRoom toSave = optionalToSave.get();
 		Optional<Student> optionalToAdd=studentRepository.findById(userId);
-		if(optionalToAdd.isEmpty()) throw new ApiException("Student not found");
+		if(optionalToAdd.isEmpty()) throw new ApiException("Student not found",HttpStatus.NOT_FOUND.value());
 		Student toAdd= optionalToAdd.get();
 		toSave.getMembers().add(toAdd);
 		toAdd.getSubscribedTo().add(toSave);
@@ -57,10 +58,10 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 	@Override
 	public void leave(Long classRoomId,Long userId) {
 		Optional<ClassRoom> optionalToSave = classRoomRepository.findById(classRoomId);
-		if (optionalToSave.isEmpty()) throw new ApiException("ClassRoom not found");
+		if (optionalToSave.isEmpty()) throw new ApiException("ClassRoom not found",HttpStatus.NOT_FOUND.value());
 		ClassRoom toSave = optionalToSave.get();
 		Optional<Student> optionalToRemove=studentRepository.findById(userId);
-		if(optionalToRemove.isEmpty()) throw new ApiException("Student not found");
+		if(optionalToRemove.isEmpty()) throw new ApiException("Student not found",HttpStatus.NOT_FOUND.value());
 		Student toRemove= optionalToRemove.get();
 		toSave.getMembers().remove(toRemove);
 		toRemove.getSubscribedTo().remove(toSave);
@@ -70,12 +71,12 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 	@Override
 	public void delete(Long classRoomId,Long teacherId) {
 		Optional<ClassRoom> toDelete=classRoomRepository.findById(classRoomId);
-		if(toDelete.isEmpty()) throw new ApiException("ClassRoom not found");
+		if(toDelete.isEmpty()) throw new ApiException("ClassRoom not found",HttpStatus.NOT_FOUND.value());
 		if(!toDelete.get().getCreator().getId().equals(teacherId)) {
-			throw new ApiException("You can't delete a Classroom you didn't create");
+			throw new ApiException("You can't delete a Classroom you didn't create",HttpStatus.UNAUTHORIZED.value());
 		}
 		else if(toDelete.get().getMembers()!=null && toDelete.get().getMembers().size()>0) {
-			throw new ApiException("you can only delete empty classrooms");
+			throw new ApiException("you can only delete empty classrooms",HttpStatus.BAD_REQUEST.value());
 		}
 		classRoomRepository.delete(toDelete.get());
 	}
@@ -83,7 +84,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 	@Override
 	public ClassRoomDTO getClassById(Long id,Long userId){
 		Optional<ClassRoom> optionalToAdapt=this.classRoomRepository.findById(id);
-		if(optionalToAdapt.isEmpty()) throw new ApiException("ClassRoom not found");
+		if(optionalToAdapt.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
 		return ClassRoomMapper.entityToDto(optionalToAdapt.get());
 	}
 

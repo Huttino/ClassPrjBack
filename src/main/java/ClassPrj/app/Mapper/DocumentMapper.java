@@ -1,21 +1,16 @@
 package ClassPrj.app.Mapper;
 
-import java.io.File;
+import ClassPrj.app.Exception.ApiException;
+import ClassPrj.app.Model.Dto.DocumentDTO;
+import ClassPrj.app.Model.Request.UploadDocumentWithData;
+import ClassPrj.app.domain.Document;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.yaml.snakeyaml.events.DocumentEndEvent;
-
-import ClassPrj.app.Exception.ApiException;
-import ClassPrj.app.Model.Dto.DocumentDTO;
-import ClassPrj.app.Model.Request.UploadDocumentWithData;
-import ClassPrj.app.domain.Document;
-import net.bytebuddy.asm.Advice.This;
 
 public class DocumentMapper {
 	public static List<Document> RequestToEntity(UploadDocumentWithData toAdapt){

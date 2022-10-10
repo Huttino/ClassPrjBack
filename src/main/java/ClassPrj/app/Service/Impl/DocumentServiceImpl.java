@@ -12,6 +12,7 @@ import ClassPrj.app.domain.ClassRoom;
 import ClassPrj.app.domain.Document;
 import ClassPrj.app.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,9 +40,9 @@ public class DocumentServiceImpl implements DocumentService {
     public List<DocumentDTO> upload(UploadDocumentWithData toUpload,Long classId,String username) {
         List<Document> toSave=DocumentMapper.RequestToEntity(toUpload);
         Optional<Teacher> uploader=this.teacherRepository.findByUsername(username);
-        if(uploader.isEmpty())throw new ApiException("Teacher not found");
+        if(uploader.isEmpty())throw new ApiException("Teacher not found", HttpStatus.NOT_FOUND.value());
         Optional<ClassRoom> uploadedTo=this.classRoomRepository.findById(classId);
-        if(uploadedTo.isEmpty()) throw new ApiException("ClassRoom not found");
+        if(uploadedTo.isEmpty()) throw new ApiException("ClassRoom not found",HttpStatus.NOT_FOUND.value());
         toSave.forEach(x->{
             x.setUploadedBy(uploader.get());
             x.setUploadedTo(uploadedTo.get());
@@ -55,23 +56,23 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public void delete(Long documentId,String username) {
         Optional<Document> toBeDeleted= this.documentRepository.findById(documentId);
-        if (toBeDeleted.isEmpty())throw new ApiException("Document not found");
+        if (toBeDeleted.isEmpty())throw new ApiException("Document not found",HttpStatus.NOT_FOUND.value());
         if (toBeDeleted.get().getUploadedBy().getUsername().equals(username)) {
             this.documentRepository.delete(toBeDeleted.get());
         }
         else {
-            throw new ApiException("Can't delete someone else's files");
+            throw new ApiException("Can't delete someone else's files",HttpStatus.UNAUTHORIZED.value());
         }
     }
 
     @Override
     public byte[] getFile(Long id,Long userid) {
         Document toReturn =this.documentRepository.findById(id).orElseThrow(()->{
-            throw new ApiException("document not Found");
+            throw new ApiException("document not Found",HttpStatus.NOT_FOUND.value());
         });
         if(!toReturn.getUploadedBy().getId().equals(userid)){
             if(toReturn.getUploadedTo().getMembers().stream().noneMatch(x-> x.getId().equals(userid))){
-                throw new ApiException("You don't have access to this document");
+                throw new ApiException("You don't have access to this document",HttpStatus.UNAUTHORIZED.value());
             }
         }
         return toReturn.getFile();
