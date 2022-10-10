@@ -4,7 +4,6 @@ import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
-import ClassPrj.app.Service.Impl.TeacherServiceImpl;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +21,12 @@ import java.util.List;
 public class ClassRoomController {
 	
 	private final ClassRoomServiceImpl classRoomServiceImpl;
-	private final TeacherServiceImpl teacherServiceImpl;
+
 	
 	@Autowired
-	public ClassRoomController(ClassRoomServiceImpl classRoomServiceImpl,TeacherServiceImpl teacherServiceImpl) {
+	public ClassRoomController(ClassRoomServiceImpl classRoomServiceImpl) {
 		this.classRoomServiceImpl=classRoomServiceImpl;
-		this.teacherServiceImpl=teacherServiceImpl;
+
 	}
 
 	@Secured("TEACHER")

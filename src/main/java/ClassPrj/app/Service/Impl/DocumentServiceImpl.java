@@ -6,7 +6,6 @@ import ClassPrj.app.Model.Dto.DocumentDTO;
 import ClassPrj.app.Model.Request.UploadDocumentWithData;
 import ClassPrj.app.Repository.ClassRoomRepository;
 import ClassPrj.app.Repository.DocumentRepository;
-import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.DocumentService;
 import ClassPrj.app.domain.ClassRoom;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -25,40 +25,39 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final TeacherRepository teacherRepository;
     private final ClassRoomRepository classRoomRepository;
-    private final StudentRepository studentRepository;
 
     @Autowired
     public DocumentServiceImpl(DocumentRepository documentRepository, TeacherRepository teacherRepository,
-                               ClassRoomRepository classRoomRepository,StudentRepository studentRepository) {
+                               ClassRoomRepository classRoomRepository) {
         super();
         this.documentRepository = documentRepository;
         this.teacherRepository = teacherRepository;
         this.classRoomRepository = classRoomRepository;
-        this.studentRepository=studentRepository;
     }
 
     @Override
     public List<DocumentDTO> upload(UploadDocumentWithData toUpload,Long classId,String username) {
         List<Document> toSave=DocumentMapper.RequestToEntity(toUpload);
-        Teacher uploader=this.teacherRepository.findByUsername(username).get();
-        ClassRoom uploadedTo=this.classRoomRepository.findById(classId).get();
+        Optional<Teacher> uploader=this.teacherRepository.findByUsername(username);
+        if(uploader.isEmpty())throw new ApiException("Teacher not found");
+        Optional<ClassRoom> uploadedTo=this.classRoomRepository.findById(classId);
+        if(uploadedTo.isEmpty()) throw new ApiException("ClassRoom not found");
         toSave.forEach(x->{
-            x.setUploadedBy(uploader);
-            x.setUploadedTo(uploadedTo);
+            x.setUploadedBy(uploader.get());
+            x.setUploadedTo(uploadedTo.get());
             x.setNotes(toUpload.getNotes());
         });
         List<DocumentDTO> savedDocuments=new ArrayList<>();
-        toSave.forEach(x->{
-            savedDocuments.add(DocumentMapper.entityToDTO( this.documentRepository.save(x)));
-        });
+        toSave.forEach(x-> savedDocuments.add(DocumentMapper.entityToDTO( this.documentRepository.save(x))));
         return savedDocuments;
     }
 
     @Override
     public void delete(Long documentId,String username) {
-        Document toBeDeleted= this.documentRepository.findById(documentId).get();
-        if (toBeDeleted.getUploadedBy().getUsername().equals(username)) {
-            this.documentRepository.delete(toBeDeleted);
+        Optional<Document> toBeDeleted= this.documentRepository.findById(documentId);
+        if (toBeDeleted.isEmpty())throw new ApiException("Document not found");
+        if (toBeDeleted.get().getUploadedBy().getUsername().equals(username)) {
+            this.documentRepository.delete(toBeDeleted.get());
         }
         else {
             throw new ApiException("Can't delete someone else's files");
@@ -71,9 +70,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new ApiException("document not Found");
         });
         if(!toReturn.getUploadedBy().getId().equals(userid)){
-            if(toReturn.getUploadedTo().getMembers().stream().noneMatch(x->{
-                return x.getId().equals(userid);
-            })){
+            if(toReturn.getUploadedTo().getMembers().stream().noneMatch(x-> x.getId().equals(userid))){
                 throw new ApiException("You don't have access to this document");
             }
         }

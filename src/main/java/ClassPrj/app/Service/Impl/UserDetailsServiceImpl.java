@@ -1,17 +1,17 @@
 package ClassPrj.app.Service.Impl;
 
-import javax.transaction.Transactional;
-
+import ClassPrj.app.Exception.ApiException;
+import ClassPrj.app.Repository.UserRepository;
+import ClassPrj.app.domain.User;
+import ClassPrj.app.security.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ClassPrj.app.Mapper.UserMapper;
-import ClassPrj.app.Repository.UserRepository;
-import ClassPrj.app.domain.User;
-import ClassPrj.app.security.UserDetailImpl;
+import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
@@ -27,9 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user=this.userRepository.findByUsername(username).get();
-		System.out.println(user);
-		return UserDetailImpl.build( this.userRepository.findByUsername(username).get());
+		Optional<User> user=this.userRepository.findByUsername(username);
+		if(user.isEmpty())throw new ApiException("User not found");
+		return UserDetailImpl.build(user.get());
 	}
 
 

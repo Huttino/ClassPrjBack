@@ -1,42 +1,26 @@
 package ClassPrj.app.Controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.http.HttpResponse;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import ClassPrj.app.Exception.ApiException;
+import ClassPrj.app.Model.Dto.DocumentDTO;
+import ClassPrj.app.Model.Request.UploadDocumentWithData;
+import ClassPrj.app.Service.Impl.DocumentServiceImpl;
+import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import ClassPrj.app.Model.Dto.DocumentDTO;
-import ClassPrj.app.Model.Request.UploadDocumentWithData;
-import ClassPrj.app.Service.DocumentService;
-import ClassPrj.app.Service.Impl.DocumentServiceImpl;
-import ClassPrj.app.security.PrincipalUtils;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
 
 @CrossOrigin(value="*",maxAge = 3600)
 @RequestMapping("/api/document")
 @RestController
 public class DocumentController {
 	
-	private DocumentServiceImpl documentServiceImpl;
+	private final DocumentServiceImpl documentServiceImpl;
 
 	@Autowired
 	public DocumentController(DocumentServiceImpl documentServiceImpl) {

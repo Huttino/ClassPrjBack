@@ -1,22 +1,22 @@
 package ClassPrj.app.Model.Request;
 
 public class UpdatePasswordRequest {
-    private String OldPassword;
+    private String oldPassword;
     private String newPassword;
     private String confirmNewPassword;
 
     public UpdatePasswordRequest(String oldPassword, String newPassword, String confirmNewPassword) {
-        OldPassword = oldPassword;
+        this.oldPassword = oldPassword;
         this.newPassword = newPassword;
         this.confirmNewPassword = confirmNewPassword;
     }
 
     public String getOldPassword() {
-        return OldPassword;
+        return oldPassword;
     }
 
     public void setOldPassword(String oldPassword) {
-        OldPassword = oldPassword;
+        oldPassword = oldPassword;
     }
 
     public String getNewPassword() {

@@ -2,7 +2,6 @@ package ClassPrj.app.Model.Dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentDTO {
 	private Long id;

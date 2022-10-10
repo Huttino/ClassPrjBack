@@ -1,16 +1,12 @@
 package ClassPrj.app.Mapper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.security.web.header.writers.frameoptions.StaticAllowFromStrategy;
-
 import ClassPrj.app.Model.Dto.UserDetailsDTO;
 import ClassPrj.app.Model.Request.UpdateUserRequest;
 import ClassPrj.app.domain.User;
 import ClassPrj.app.security.UserDetailImpl;
-import net.bytebuddy.asm.Advice.This;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserMapper {
 
@@ -34,7 +30,7 @@ public class UserMapper {
 			user.setLastName(updateUserRequest.getLastName());
 		}
 		if(updateUserRequest.getUsername()!=null) {
-			
+			user.setUsername(updateUserRequest.getUsername());
 		}
 		return user;
 	}
