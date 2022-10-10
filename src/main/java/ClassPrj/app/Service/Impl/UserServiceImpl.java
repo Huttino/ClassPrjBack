@@ -57,11 +57,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updatePassword(UpdatePasswordRequest updatePasswordRequest){
 		String password=PrincipalUtils.extractPrincipalObject(SecurityContextHolder.getContext().getAuthentication()).getPassword();
-		System.out.println(password);
 		if(!updatePasswordRequest.confirmPassword()){
 			throw new ApiException("new Passwords don't match",HttpStatus.BAD_REQUEST.value());
 		}
-		else if (!passwordEncoder.encode(updatePasswordRequest.getOldPassword()).equals(password)){
+		else if (!this.passwordEncoder.matches(updatePasswordRequest.getOldPassword(),password)){
 			throw new ApiException("Wrong old Password",HttpStatus.BAD_REQUEST.value());
 		}
 		else{
@@ -79,10 +78,13 @@ public class UserServiceImpl implements UserService {
 
 
 	public void updateUser(UpdateUserRequest updateUserRequest) {
-		if(userRepository.existsByUsername(updateUserRequest.getUsername())) {
+		Long userId= PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		String userUsername=PrincipalUtils.extractPrincipal(SecurityContextHolder.getContext().getAuthentication());
+		System.out.println(updateUserRequest.getUsername());
+		if(!updateUserRequest.getUsername().equals(userUsername) && userRepository.existsByUsername(updateUserRequest.getUsername())) {
 			throw new ApiException("Username already in use", HttpStatus.CONFLICT.value());
 		}
-		Long userId= PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+
 		userRepository.findById(userId).ifPresent((x)-> userRepository.save(UserMapper.updateRequestToUser(updateUserRequest,x)));
 	}
 	
