@@ -3,7 +3,9 @@ package ClassPrj.app.Controller;
 import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
+import ClassPrj.app.Model.Request.UpdateGradeRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
+import ClassPrj.app.Service.Impl.TeacherServiceImpl;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,16 @@ import java.util.List;
 public class ClassRoomController {
 	
 	private final ClassRoomServiceImpl classRoomServiceImpl;
+	private final TeacherServiceImpl teacherServiceImpl;
 
 	
 	@Autowired
-	public ClassRoomController(ClassRoomServiceImpl classRoomServiceImpl) {
+	public ClassRoomController(
+			ClassRoomServiceImpl classRoomServiceImpl,
+			TeacherServiceImpl teacherServiceImpl
+	) {
 		this.classRoomServiceImpl=classRoomServiceImpl;
+		this.teacherServiceImpl=teacherServiceImpl;
 
 	}
 
@@ -44,8 +51,6 @@ public class ClassRoomController {
 		return ResponseEntity.ok().build();
 	}
 
-
-	//TODO:add control in which it returns grades nly if every member has it
 	@GetMapping("/{id}")
 	public ResponseEntity<ClassRoomDTO> getClass(@PathVariable(name="id")Long id){
 		Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
@@ -59,6 +64,12 @@ public class ClassRoomController {
 		return ResponseEntity.ok(toReturn);
 	}
 
-
+	@PatchMapping("/{id}")
+	@Secured("TEACHER")
+	public ResponseEntity<?> assignGrade(@PathVariable(name="id")Long classId,@RequestBody UpdateGradeRequest updateGradeRequest){
+		Long myId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		this.teacherServiceImpl.assignGrade(classId,updateGradeRequest);
+		return ResponseEntity.ok().build();
+	}
 
 }

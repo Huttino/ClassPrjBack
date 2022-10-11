@@ -41,6 +41,7 @@ public class UserController {
         this.studentServiceimpl=studentServiceimpl;
         this.teacherServiceImpl=teacherServiceImpl;
     }
+
     @PutMapping("/classRoom/{id}")
     @Secured("STUDENT")
     public ResponseEntity<?> join(@PathVariable(name="id") Long classRoomId){
@@ -48,8 +49,7 @@ public class UserController {
         this.classRoomServiceImpl.join(classRoomId,userId);
         return ResponseEntity.ok().build();
     }
-    
-    
+
     @DeleteMapping("/classRoom/{id}")
     @Secured("STUDENT")
     public ResponseEntity<?> leave(@PathVariable(name="id") Long classRoomId){
@@ -58,7 +58,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
 
@@ -72,7 +71,6 @@ public class UserController {
     	return ResponseEntity.ok().build();
     }
 
-    //TODO
     @GetMapping("")
     public ResponseEntity<?> getMe(){
         UserDetailImpl detailImpl= PrincipalUtils.extractPrincipalObject(SecurityContextHolder.getContext().getAuthentication());
@@ -94,4 +92,5 @@ public class UserController {
         List<ClassRoomDTO> toReturn= this.studentServiceimpl.getClasses(myId);
         return ResponseEntity.ok(toReturn);
     }
+
 }
