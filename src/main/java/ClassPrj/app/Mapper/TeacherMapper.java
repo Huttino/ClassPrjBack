@@ -18,7 +18,7 @@ public class TeacherMapper {
 		toReturn.setAuthority(teacher.getRole().getRoleName());
 		List<ClassRoomDTO> mapToadd=new ArrayList<>();
 		teacher.getHasCreated().forEach(c->{
-			mapToadd.add(ClassRoomMapper.entityToDto(c));
+			mapToadd.add(ClassRoomMapper.entityToDtoTeacher(c));
 		});
 		toReturn.setHasCreated(mapToadd);
 		return toReturn;

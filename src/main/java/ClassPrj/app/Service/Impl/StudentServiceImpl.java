@@ -5,6 +5,7 @@ import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Mapper.StudentMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Dto.StudentDTO;
+import ClassPrj.app.Repository.MemberRepository;
 import ClassPrj.app.Repository.StudentRepository;
 import ClassPrj.app.Service.StudentService;
 import ClassPrj.app.domain.Student;
@@ -19,10 +20,15 @@ import java.util.Optional;
 @Service
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository){
+    public StudentServiceImpl(
+            StudentRepository studentRepository,
+            MemberRepository memberRepository
+    ){
         this.studentRepository=studentRepository;
+        this.memberRepository=memberRepository;
     }
 
     public StudentDTO getStudent(Long id){
@@ -36,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
         List<ClassRoomDTO> toReturn=new ArrayList<>();
         Optional<Student> toGetClasses=this.studentRepository.findById(myId);
         if(toGetClasses.isEmpty())throw new ApiException("Student not found",HttpStatus.NOT_FOUND.value());
-        toGetClasses.get().getSubscribedTo().forEach(x-> toReturn.add(ClassRoomMapper.entityToDto(x)));
+        toGetClasses.get().getClassList().forEach(x-> toReturn.add(ClassRoomMapper.entityToDto(x.getClassRoom(),memberRepository.existsMembersByClassRoomIdAndGradeIsNotNull(x.getId()))));
         return toReturn;
     }
 }

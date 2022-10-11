@@ -20,7 +20,7 @@ public class ClassRoom {
 	@JoinColumn( name="creator_id",nullable = false)
 	private Teacher creator;
 	
-	@OneToMany(cascade=CascadeType.DETACH, mappedBy = "subscribedTo")
+	@OneToMany(cascade=CascadeType.DETACH, mappedBy = "classRoom")
 	private List<Member> members;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="uploadedTo")

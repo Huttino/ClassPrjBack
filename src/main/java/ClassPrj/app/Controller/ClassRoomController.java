@@ -33,7 +33,7 @@ public class ClassRoomController {
 	@PostMapping("")
 	public ResponseEntity<ClassRoomDTO> Create(@Valid @RequestBody NewClassRoomRequest nc){
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
-		return ResponseEntity.ok().body(ClassRoomMapper.entityToDto(this.classRoomServiceImpl.create(nc.getClassname(),username)));
+		return ResponseEntity.ok().body(ClassRoomMapper.entityToDtoTeacher(this.classRoomServiceImpl.create(nc.getClassname(),username)));
 	}
 
 	@Secured("TEACHER")
@@ -44,6 +44,8 @@ public class ClassRoomController {
 		return ResponseEntity.ok().build();
 	}
 
+
+	//TODO:add control in which it returns grades nly if every member has it
 	@GetMapping("/{id}")
 	public ResponseEntity<ClassRoomDTO> getClass(@PathVariable(name="id")Long id){
 		Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());

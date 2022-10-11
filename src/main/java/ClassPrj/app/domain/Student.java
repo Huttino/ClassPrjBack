@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name="Student")
 public class Student extends User {
 
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "student",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	private List<Member> classList;
 
 	public Student() {
