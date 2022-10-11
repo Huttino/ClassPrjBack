@@ -38,8 +38,8 @@ public class User {
 		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1);
+		this.lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1);
 		this.role = role;
 	}
 
@@ -56,7 +56,7 @@ public class User {
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = username.substring(0,1).toUpperCase()+username.substring(1);
 	}
 
 	public String getPassword() {
@@ -72,7 +72,7 @@ public class User {
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1);
 	}
 
 	public String getLastName() {
@@ -80,7 +80,7 @@ public class User {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1);
 	}
 
 	public Role getRole() {

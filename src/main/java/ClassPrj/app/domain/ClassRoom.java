@@ -20,8 +20,8 @@ public class ClassRoom {
 	@JoinColumn( name="creator_id",nullable = false)
 	private Teacher creator;
 	
-	@ManyToMany(cascade=CascadeType.DETACH, mappedBy = "subscribedTo")
-	private List<Student> members;
+	@OneToMany(cascade=CascadeType.DETACH, mappedBy = "subscribedTo")
+	private List<Member> members;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="uploadedTo")
 	private List<Document> documents;
@@ -31,10 +31,10 @@ public class ClassRoom {
 	public ClassRoom() {
 	}
 
-	public ClassRoom(Long id, String className, Teacher creator, List<Student> members) {
+	public ClassRoom(Long id, String className, Teacher creator, List<Member> members) {
 		super();
 		this.id = id;
-		this.className = className;
+		this.className = className.substring(0,1).toUpperCase()+className.substring(1);
 		this.creator = creator;
 		this.members = members;
 	}
@@ -42,7 +42,7 @@ public class ClassRoom {
 	
 	
 	public ClassRoom(String className) {
-		this.className = className;
+		this.className = className.substring(0,1).toUpperCase()+className.substring(1);
 	}
 	
 	
@@ -60,7 +60,7 @@ public class ClassRoom {
 	}
 
 	public void setClassName(String className) {
-		this.className = className;
+		this.className = className.substring(0,1).toUpperCase()+className.substring(1);
 	}
 
 	public List<Document> getDocuments() {
@@ -79,11 +79,11 @@ public class ClassRoom {
 		this.creator = creator;
 	}
 
-	public List<Student> getMembers() {
+	public List<Member> getMembers() {
 		return members;
 	}
 
-	public void setMembers(List<Student> members) {
+	public void setMembers(List<Member> members) {
 		this.members = members;
 	}
 

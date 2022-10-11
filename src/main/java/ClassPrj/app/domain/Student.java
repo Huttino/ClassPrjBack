@@ -6,33 +6,23 @@ import java.util.List;
 @Entity
 @Table(name="Student")
 public class Student extends User {
-	
-	@ManyToMany
-	@JoinTable(
-			name = "student_classRoom",
-			joinColumns = @JoinColumn(name="student_id"),
-			inverseJoinColumns = @JoinColumn(name="classRoom_id"))
-	private List<ClassRoom> subscribedTo;
+
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Member> classList;
 
 	public Student() {
-		super();
 	}
-	
-	public Student(Long id, String username, String password, String firstName, String lastName, Role role,
-			List<ClassRoom> subscribedTo) {
+
+	public Student(Long id, String username, String password, String firstName, String lastName, Role role, List<Member> classList) {
 		super(id, username, password, firstName, lastName, role);
-		this.subscribedTo = subscribedTo;
+		this.classList = classList;
 	}
 
-	public List<ClassRoom> getSubscribedTo() {
-		return subscribedTo;
+	public List<Member> getClassList() {
+		return classList;
 	}
 
-	public void setSubscribedTo(List<ClassRoom> subscribedTo) {
-		this.subscribedTo = subscribedTo;
+	public void setClassList(List<Member> classList) {
+		this.classList = classList;
 	}
-
-	
-	
-	
 }

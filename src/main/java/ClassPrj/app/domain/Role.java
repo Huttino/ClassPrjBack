@@ -24,7 +24,7 @@ public class Role{
 	
 	public Role(Long id, String roleName) {
 		this.id = id;
-		this.roleName = roleName;
+		this.roleName = roleName.toUpperCase();
 	}
 	
 	public Role(ROLEVALUE role) {
@@ -46,7 +46,7 @@ public class Role{
 	}
 
 	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+		this.roleName = roleName.toUpperCase();
 	}
 
 
