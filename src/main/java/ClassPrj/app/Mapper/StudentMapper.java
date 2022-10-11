@@ -30,10 +30,24 @@ public class StudentMapper {
 		toReturn.setId(toAdapt.getId());
 		toReturn.setAuthority(toAdapt.getRole().getRoleName());
 		List<ClassInStudent> memberOf=new ArrayList<>();
-		toAdapt.getSubscribedTo().forEach(x->{
-			memberOf.add(new ClassInStudent(x.getId(),x.getClassName()));
+		toAdapt.getClassList().forEach(x->{
+			memberOf.add(new ClassInStudent(x.getClassRoom().getId(), x.getClassRoom().getClassName(),x.getGrade()));
 		});
 		toReturn.setMemberOf(memberOf);
 		return toReturn;
     }
+	public static StudentDTO EntityToDtoNoGrade(Student toAdapt){
+		StudentDTO toReturn=new StudentDTO();
+		toReturn.setUsername(toAdapt.getUsername());
+		toReturn.setFirstName(toAdapt.getFirstName());
+		toReturn.setLastName(toAdapt.getLastName());
+		toReturn.setId(toAdapt.getId());
+		toReturn.setAuthority(toAdapt.getRole().getRoleName());
+		List<ClassInStudent> memberOf=new ArrayList<>();
+		toAdapt.getClassList().forEach(x->{
+			memberOf.add(new ClassInStudent(x.getClassRoom().getId(), x.getClassRoom().getClassName()));
+		});
+		toReturn.setMemberOf(memberOf);
+		return toReturn;
+	}
 }
