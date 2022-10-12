@@ -3,19 +3,17 @@ package ClassPrj.app.Model.Request;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class UpdateGradeRequest {
-
-    @NotEmpty
+public class RemoveFromClassRequest {
     @NotNull
+    @NotEmpty
     private Long studentId;
-
-    @NotEmpty
     @NotNull
-    private Long Grade;
+    @NotEmpty
+    private Long classRoomId;
 
-    public UpdateGradeRequest(Long studentId, Long grade) {
+    public RemoveFromClassRequest(Long studentId, Long classRoomId) {
         this.studentId = studentId;
-        Grade = grade;
+        this.classRoomId = classRoomId;
     }
 
     public Long getStudentId() {
@@ -26,11 +24,11 @@ public class UpdateGradeRequest {
         this.studentId = studentId;
     }
 
-    public Long getGrade() {
-        return Grade;
+    public Long getClassRoomId() {
+        return classRoomId;
     }
 
-    public void setGrade(Long grade) {
-        Grade = grade;
+    public void setClassRoomId(Long classRoomId) {
+        this.classRoomId = classRoomId;
     }
 }

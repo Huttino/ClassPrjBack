@@ -3,6 +3,7 @@ package ClassPrj.app.Controller;
 import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
+import ClassPrj.app.Model.Request.RemoveFromClassRequest;
 import ClassPrj.app.Model.Request.UpdateGradeRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
 import ClassPrj.app.Service.Impl.TeacherServiceImpl;
@@ -68,7 +69,15 @@ public class ClassRoomController {
 	@Secured("TEACHER")
 	public ResponseEntity<?> assignGrade(@PathVariable(name="id")Long classId,@RequestBody UpdateGradeRequest updateGradeRequest){
 		Long myId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		this.teacherServiceImpl.assignGrade(classId,updateGradeRequest);
+		this.teacherServiceImpl.assignGrade(myId,classId,updateGradeRequest);
+		return ResponseEntity.ok().build();
+	}
+
+	@PatchMapping("")
+	@Secured("TEACHER")
+	public ResponseEntity<?> removeFromClass(@RequestBody RemoveFromClassRequest removeFromClassRequest){
+		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		this.teacherServiceImpl.removeFromClass(removeFromClassRequest,myId);
 		return ResponseEntity.ok().build();
 	}
 

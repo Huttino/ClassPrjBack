@@ -3,9 +3,9 @@ package ClassPrj.app.Model.Dto;
 public class ClassInStudent {
     public Long id;
     public String className;
-    public Integer grade;
+    public Long grade;
 
-    public ClassInStudent(Long id,String className,Integer grade) {
+    public ClassInStudent(Long id,String className,Long grade) {
         this.id = id;
         this.className = className;
         this.grade=grade;
@@ -32,11 +32,11 @@ public class ClassInStudent {
         this.className = className;
     }
 
-    public Integer getGrade() {
+    public Long getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Long grade) {
         this.grade = grade;
     }
 }

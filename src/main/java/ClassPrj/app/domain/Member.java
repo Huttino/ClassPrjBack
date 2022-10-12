@@ -14,7 +14,7 @@ public class Member {
     @Column(nullable = true)
     @Min(value = 0)
     @Max(value = 10)
-    private Integer grade;
+    private Long grade;
 
     @ManyToOne
     @JoinColumn(name = "student_id",nullable = false)
@@ -30,7 +30,7 @@ public class Member {
         this.classRoom = classRoom;
     }
 
-    public Member(Long id, Integer grade, Student student, ClassRoom classRoom) {
+    public Member(Long id, Long grade, Student student, ClassRoom classRoom) {
         this.id = id;
         this.grade = grade;
         this.student = student;
@@ -48,11 +48,11 @@ public class Member {
         this.id = id;
     }
 
-    public Integer getGrade() {
+    public Long getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Long grade) {
         this.grade = grade;
     }
 

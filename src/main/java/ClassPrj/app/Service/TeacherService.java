@@ -11,5 +11,5 @@ public interface TeacherService {
 	public Optional<Teacher> findById(Long id);
 	public Optional<List<Teacher> > findAll();
 	public void update(Teacher teacher);
-	public void assignGrade(Long classId, UpdateGradeRequest updateGradeRequest);
+	public void assignGrade(Long teacherId,Long classId, UpdateGradeRequest updateGradeRequest);
 	}
