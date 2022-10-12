@@ -1,6 +1,5 @@
 package ClassPrj.app.Exception;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,11 +14,11 @@ public class CustomExceptionHandler {
 
 	
 	@ExceptionHandler({ApiException.class})
-	public ResponseEntity<Object> usernameAlreadyExists(ApiException e){
+	public ResponseEntity<Object> HandleException(ApiException e){
 		ApiExceptionReturn ret=new ApiExceptionReturn(
 				e,
 				ZonedDateTime.now(ZoneId.systemDefault())
 				);
-		return new ResponseEntity<>(ret,HttpStatus.BAD_REQUEST);
+		return ResponseEntity.status(ret.getHttpStatus()).body(ret);
 	}
 }

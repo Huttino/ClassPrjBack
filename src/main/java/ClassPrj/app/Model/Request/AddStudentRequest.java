@@ -3,25 +3,25 @@ package ClassPrj.app.Model.Request;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class RemoveFromClassRequest {
+public class AddStudentRequest {
     @NotNull
     @NotEmpty
-    private Long studentId;
+    private String studentUser;
     @NotNull
     @NotEmpty
     private Long classRoomId;
 
-    public RemoveFromClassRequest(Long studentId, Long classRoomId) {
-        this.studentId = studentId;
+    public AddStudentRequest(String studentUser, Long classRoomId) {
+        this.studentUser = studentUser;
         this.classRoomId = classRoomId;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public String getStudentUser() {
+        return studentUser;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentUser(String studentUser) {
+        this.studentUser = studentUser;
     }
 
     public Long getClassRoomId() {

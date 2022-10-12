@@ -2,8 +2,10 @@ package ClassPrj.app.Controller;
 
 import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
+import ClassPrj.app.Model.Dto.StudentInClass;
+import ClassPrj.app.Model.Request.AddStudentRequest;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
-import ClassPrj.app.Model.Request.RemoveFromClassRequest;
+import ClassPrj.app.Model.Request.StudentClassRequest;
 import ClassPrj.app.Model.Request.UpdateGradeRequest;
 import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
 import ClassPrj.app.Service.Impl.TeacherServiceImpl;
@@ -59,6 +61,13 @@ public class ClassRoomController {
 		return ResponseEntity.ok(toReturn);
 	}
 
+	@GetMapping("/creator/{id}")
+	@Secured("TEACHER")
+	public ResponseEntity<List<ClassRoomDTO>> getClassesFrom(@PathVariable(name="id")Long teacherId){
+		List<ClassRoomDTO> toReturn=this.classRoomServiceImpl.getClassesFrom(teacherId);
+		return ResponseEntity.ok(toReturn);
+	}
+
 	@GetMapping("")
 	public ResponseEntity<List<ClassRoomDTO>> getAllClass(){
 		List<ClassRoomDTO> toReturn=this.classRoomServiceImpl.getAllClass();
@@ -75,10 +84,18 @@ public class ClassRoomController {
 
 	@PatchMapping("")
 	@Secured("TEACHER")
-	public ResponseEntity<?> removeFromClass(@RequestBody RemoveFromClassRequest removeFromClassRequest){
+	public ResponseEntity<?> removeFromClass(@RequestBody StudentClassRequest removeFromClassRequest){
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		this.teacherServiceImpl.removeFromClass(removeFromClassRequest,myId);
 		return ResponseEntity.ok().build();
+	}
+
+	@PutMapping("")
+	@Secured("TEACHER")
+	public ResponseEntity<StudentInClass> addToClass(@RequestBody AddStudentRequest addToClass){
+		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+
+		return ResponseEntity.ok(this.teacherServiceImpl.addToClass(addToClass,myId));
 	}
 
 }

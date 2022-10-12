@@ -2,6 +2,7 @@ package ClassPrj.app.Mapper;
 
 import ClassPrj.app.Model.Dto.ClassInStudent;
 import ClassPrj.app.Model.Dto.StudentDTO;
+import ClassPrj.app.Model.Dto.StudentInClass;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.SignUpRequest;
 import ClassPrj.app.domain.Role;
@@ -36,5 +37,9 @@ public class StudentMapper {
 		toReturn.setMemberOf(memberOf);
 		return toReturn;
     }
+	public static StudentInClass EntityToInClass(Student student){
+		StudentInClass toReturn=new StudentInClass(student.getId(), student.getUsername());
+		return toReturn;
+	}
 
 }

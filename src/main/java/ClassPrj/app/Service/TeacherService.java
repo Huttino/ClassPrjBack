@@ -1,5 +1,8 @@
 package ClassPrj.app.Service;
 
+import ClassPrj.app.Model.Dto.StudentInClass;
+import ClassPrj.app.Model.Request.AddStudentRequest;
+import ClassPrj.app.Model.Request.StudentClassRequest;
 import ClassPrj.app.Model.Request.UpdateGradeRequest;
 import ClassPrj.app.domain.Teacher;
 
@@ -12,4 +15,7 @@ public interface TeacherService {
 	public Optional<List<Teacher> > findAll();
 	public void update(Teacher teacher);
 	public void assignGrade(Long teacherId,Long classId, UpdateGradeRequest updateGradeRequest);
-	}
+	public void removeFromClass(StudentClassRequest request, Long teacherId);
+
+	public StudentInClass addToClass(AddStudentRequest addToClass, Long myId);
+}
