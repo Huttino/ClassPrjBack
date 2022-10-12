@@ -1,6 +1,5 @@
 package ClassPrj.app.Controller;
 
-import ClassPrj.app.Mapper.ClassRoomMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.Dto.StudentInClass;
 import ClassPrj.app.Model.Request.AddStudentRequest;
@@ -42,8 +41,8 @@ public class ClassRoomController {
 	@Secured("TEACHER")
 	@PostMapping("")
 	public ResponseEntity<ClassRoomDTO> Create(@Valid @RequestBody NewClassRoomRequest nc){
-		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
-		return ResponseEntity.ok().body(ClassRoomMapper.entityToDtoTeacher(this.classRoomServiceImpl.create(nc.getClassname(),username)));
+		Long teacherId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		return ResponseEntity.ok().body(this.classRoomServiceImpl.create(nc.getClassname(),teacherId));
 	}
 
 	@Secured("TEACHER")

@@ -1,12 +1,11 @@
 package ClassPrj.app.Service;
 
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
-import ClassPrj.app.domain.ClassRoom;
 
 import java.util.List;
 
 public interface ClassRoomService {
-	ClassRoom create(String name,String creator);
+	ClassRoomDTO create(String name,Long teacherId);
 	void join(Long classRoomId,Long userId);
 	void leave(Long classRoomId,Long userId);
 	void delete(Long classRoomId,Long teacherId);

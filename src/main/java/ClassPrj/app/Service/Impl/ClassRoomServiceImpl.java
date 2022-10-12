@@ -10,7 +10,6 @@ import ClassPrj.app.Repository.TeacherRepository;
 import ClassPrj.app.Service.ClassRoomService;
 import ClassPrj.app.domain.ClassRoom;
 import ClassPrj.app.domain.Member;
-import ClassPrj.app.domain.Student;
 import ClassPrj.app.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,26 +36,32 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public ClassRoom create(String name, String creator) {
+    public ClassRoomDTO create(String name, Long teacherId) {
         ClassRoom toSave = new ClassRoom(name);
-        Optional<Teacher> optional = this.teacherRepository.findByUsername(creator);
-        if (optional.isPresent()) toSave.setCreator(optional.get());
-        else throw new ApiException("Teacher not Found", HttpStatus.NOT_FOUND.value());
-        return this.classRoomRepository.save(toSave);
+        Optional <Teacher> teacher= this.teacherRepository.findById(teacherId);
+        if(teacher.isEmpty()) throw new ApiException("Teacher not Found",HttpStatus.NOT_FOUND.value());
+        else {
+            toSave.setCreator(teacher.get());
+            return ClassRoomMapper.entityToDtoTeacher(classRoomRepository.save(toSave));
+        }
     }
 
     @Override
     public void join(Long classRoomId, Long userId) {
-        Optional<ClassRoom> optionalWhere = classRoomRepository.findById(classRoomId);
-        if (optionalWhere.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
-        ClassRoom where = optionalWhere.get();
-        Optional<Student> optionalWho = studentRepository.findById(userId);
-        if (optionalWho.isEmpty()) throw new ApiException("Student not found", HttpStatus.NOT_FOUND.value());
-        Student who = optionalWho.get();
-        Member toSave = new Member();
-        toSave.setStudent(who);
-        toSave.setClassRoom(where);
-        memberRepository.save(toSave);
+        classRoomRepository.findById(classRoomId).ifPresentOrElse(
+                x->{
+                    studentRepository.findById(userId).ifPresentOrElse(
+                            y->{
+                                Member toSave=new Member(0L,y,x);
+                                this.memberRepository.save(toSave);
+                            },()->{
+                                throw new ApiException("Student not found", HttpStatus.NOT_FOUND.value());
+                            }
+                    );
+                },()->{
+                    throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
+                }
+                );
     }
 
     @Override
