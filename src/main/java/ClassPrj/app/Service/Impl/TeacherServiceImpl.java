@@ -71,7 +71,7 @@ public class TeacherServiceImpl implements TeacherService{
 		Optional<Member> toAssignGrade=this.memberRepository.findMemberByClassRoomIdAndStudentId(classId, updateGradeRequest.getStudentId());
 		if(toAssignGrade.isEmpty())throw new ApiException("Student not member of this class", HttpStatus.BAD_REQUEST.value());
 		toAssignGrade.ifPresent(x->{
-			if(x.getClassRoom().getCreator().getId().equals(teacherId))
+			if(!x.getClassRoom().getCreator().getId().equals(teacherId))
 				throw new ApiException("You didn't create this ClassRoom",HttpStatus.UNAUTHORIZED.value());
 			else{
 				x.setGrade(updateGradeRequest.getGrade());

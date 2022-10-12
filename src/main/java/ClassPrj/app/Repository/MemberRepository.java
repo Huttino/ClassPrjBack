@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member,Long> {
-    public Optional<Member> findMemberByClassRoomIdAndStudentId(Long classRoomid, Long studentId);
-    public boolean existsMembersByClassRoomIdAndGradeIsNotNull(Long classRoomid);
+    Optional<Member> findMemberByClassRoomIdAndStudentId(Long classRoomId, Long studentId);
+    boolean existsMembersByClassRoomIdAndGradeIsNull(Long classRoomId);
 }

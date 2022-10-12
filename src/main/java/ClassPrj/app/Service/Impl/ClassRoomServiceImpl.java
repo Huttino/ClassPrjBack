@@ -83,7 +83,12 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     public ClassRoomDTO getClassById(Long id, Long userId) {
         Optional<ClassRoom> optionalToAdapt = this.classRoomRepository.findById(id);
         if (optionalToAdapt.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
-        return ClassRoomMapper.entityToDto(optionalToAdapt.get(), !memberRepository.existsMembersByClassRoomIdAndGradeIsNotNull(optionalToAdapt.get().getId()));
+        ClassRoomDTO toReturn;
+        if(this.teacherRepository.existsById(userId)){
+            toReturn=ClassRoomMapper.entityToDtoTeacher(optionalToAdapt.get());
+        }
+        else toReturn=ClassRoomMapper.entityToDto(optionalToAdapt.get(),memberRepository.existsMembersByClassRoomIdAndGradeIsNull(id));
+        return toReturn;
     }
 
     @Override
@@ -91,7 +96,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         List<ClassRoomDTO> toReturn = new ArrayList<>();
         List<ClassRoom> classRoomList = this.classRoomRepository.findAll();
         if (!classRoomList.isEmpty()) {
-            classRoomList.forEach(x -> toReturn.add(ClassRoomMapper.entityToDto(x, !memberRepository.existsMembersByClassRoomIdAndGradeIsNotNull(x.getId()))));
+            classRoomList.forEach(x -> toReturn.add(ClassRoomMapper.entityToDto(x, !memberRepository.existsMembersByClassRoomIdAndGradeIsNull(x.getId()))));
         }
         return toReturn;
     }

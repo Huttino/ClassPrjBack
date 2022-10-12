@@ -42,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
         List<ClassRoomDTO> toReturn=new ArrayList<>();
         Optional<Student> toGetClasses=this.studentRepository.findById(myId);
         if(toGetClasses.isEmpty())throw new ApiException("Student not found",HttpStatus.NOT_FOUND.value());
-        toGetClasses.get().getClassList().forEach(x-> toReturn.add(ClassRoomMapper.entityToDto(x.getClassRoom(),memberRepository.existsMembersByClassRoomIdAndGradeIsNotNull(x.getId()))));
+        toGetClasses.get().getClassList().forEach(x-> toReturn.add(ClassRoomMapper.entityToDto(x.getClassRoom(),!memberRepository.existsMembersByClassRoomIdAndGradeIsNull(x.getId()))));
         return toReturn;
     }
 }
