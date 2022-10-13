@@ -38,8 +38,8 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     @Override
     public ClassRoomDTO create(String name, Long teacherId) {
         ClassRoom toSave = new ClassRoom(name);
-        Optional <Teacher> teacher= this.teacherRepository.findById(teacherId);
-        if(teacher.isEmpty()) throw new ApiException("Teacher not Found",HttpStatus.NOT_FOUND.value());
+        Optional<Teacher> teacher = this.teacherRepository.findById(teacherId);
+        if (teacher.isEmpty()) throw new ApiException("Teacher not Found", HttpStatus.NOT_FOUND.value());
         else {
             toSave.setCreator(teacher.get());
             return ClassRoomMapper.entityToDtoTeacher(classRoomRepository.save(toSave));
@@ -49,19 +49,17 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     @Override
     public void join(Long classRoomId, Long userId) {
         classRoomRepository.findById(classRoomId).ifPresentOrElse(
-                x->{
-                    studentRepository.findById(userId).ifPresentOrElse(
-                            y->{
-                                Member toSave=new Member(0L,y,x);
-                                this.memberRepository.save(toSave);
-                            },()->{
-                                throw new ApiException("Student not found", HttpStatus.NOT_FOUND.value());
-                            }
-                    );
-                },()->{
+                x -> studentRepository.findById(userId).ifPresentOrElse(
+                        y -> {
+                            Member toSave = new Member(0L, y, x);
+                            this.memberRepository.save(toSave);
+                        }, () -> {
+                            throw new ApiException("Student not found", HttpStatus.NOT_FOUND.value());
+                        }
+                ), () -> {
                     throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
                 }
-                );
+        );
     }
 
     @Override
@@ -89,10 +87,10 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         Optional<ClassRoom> optionalToAdapt = this.classRoomRepository.findById(id);
         if (optionalToAdapt.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
         ClassRoomDTO toReturn;
-        if(this.teacherRepository.existsById(userId)){
-            toReturn=ClassRoomMapper.entityToDtoTeacher(optionalToAdapt.get());
-        }
-        else toReturn=ClassRoomMapper.entityToDto(optionalToAdapt.get(),memberRepository.existsMembersByClassRoomIdAndGradeIsNull(id));
+        if (this.teacherRepository.existsById(userId)) {
+            toReturn = ClassRoomMapper.entityToDtoTeacher(optionalToAdapt.get());
+        } else
+            toReturn = ClassRoomMapper.entityToDto(optionalToAdapt.get(), memberRepository.existsMembersByClassRoomIdAndGradeIsNull(id));
         return toReturn;
     }
 
@@ -111,12 +109,12 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         List<ClassRoomDTO> toReturn = new ArrayList<>();
         Optional<Teacher> teacher = teacherRepository.findById(teacherId);
         teacher.ifPresentOrElse(x ->
-            x.getHasCreated().forEach(y ->
-                toReturn.add(ClassRoomMapper.entityToDtoTeacher(y))
-            )
-        , () -> {
-            throw new ApiException("Teacher not found", HttpStatus.NOT_FOUND.value());
-        });
+                        x.getHasCreated().forEach(y ->
+                                toReturn.add(ClassRoomMapper.entityToDtoTeacher(y))
+                        )
+                , () -> {
+                    throw new ApiException("Teacher not found", HttpStatus.NOT_FOUND.value());
+                });
         return toReturn;
     }
 

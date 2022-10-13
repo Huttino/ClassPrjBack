@@ -7,7 +7,7 @@ import java.net.URI;
 
 public interface UserService {
 
-	public boolean checkUserExistence(String username);
-	public URI signUp(SignUpRequest request);
-	public void updatePassword(UpdatePasswordRequest updatePasswordRequest);
+	 boolean checkUserExistence(String username);
+	 URI signUp(SignUpRequest request);
+	 void updatePassword(UpdatePasswordRequest updatePasswordRequest);
 }

@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TeacherService {
-	public Optional<Teacher> findByUsername(String username);
-	public Optional<Teacher> findById(Long id);
-	public Optional<List<Teacher> > findAll();
-	public void update(Teacher teacher);
-	public void assignGrade(Long teacherId,Long classId, UpdateGradeRequest updateGradeRequest);
-	public void removeFromClass(StudentClassRequest request, Long teacherId);
+	 Optional<Teacher> findByUsername(String username);
+	 Optional<Teacher> findById(Long id);
+	 Optional<List<Teacher> > findAll();
+	 void update(Teacher teacher);
+	 void assignGrade(Long teacherId,Long classId, UpdateGradeRequest updateGradeRequest);
+	 void removeFromClass(StudentClassRequest request, Long teacherId);
 
-	public StudentInClass addToClass(AddStudentRequest addToClass, Long myId);
+	StudentInClass addToClass(AddStudentRequest addToClass, Long myId);
 }
