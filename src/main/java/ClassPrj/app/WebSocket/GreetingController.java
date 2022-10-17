@@ -14,6 +14,6 @@ public class GreetingController {
     @MessageMapping("/send/message")
     @SendTo("/message")
     public GreetingMessage greet(String hello){
-        return new GreetingMessage("Hello,"+ HtmlUtils.htmlEscape(hello));
+        return new GreetingMessage( HtmlUtils.htmlEscape(hello));
     }
 }
