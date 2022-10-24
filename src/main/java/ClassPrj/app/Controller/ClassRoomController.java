@@ -10,6 +10,7 @@ import ClassPrj.app.Service.ClassRoomService;
 import ClassPrj.app.Service.TeacherService;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,10 +48,10 @@ public class ClassRoomController {
 
 	@Secured("TEACHER")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable(name="id")Long id){
+	public ResponseEntity delete(@PathVariable(name="id")Long id){
 		Long creatorId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		this.classRoomService.delete(id,creatorId);
-		return ResponseEntity.ok().build();
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/{id}")
@@ -83,10 +84,10 @@ public class ClassRoomController {
 
 	@PatchMapping("")
 	@Secured("TEACHER")
-	public ResponseEntity<?> removeFromClass(@RequestBody StudentClassRequest removeFromClassRequest){
+	public ResponseEntity removeFromClass(@RequestBody StudentClassRequest removeFromClassRequest){
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		this.teacherService.removeFromClass(removeFromClassRequest,myId);
-		return ResponseEntity.ok().build();
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 
 	@PutMapping("")

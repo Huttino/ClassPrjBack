@@ -6,6 +6,7 @@ import ClassPrj.app.Model.Request.UploadDocumentWithData;
 import ClassPrj.app.Service.DocumentService;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class DocumentController {
 
 	@PostMapping("/{id}")
 	@Secured("TEACHER")
-	public ResponseEntity<?> upload(@ModelAttribute UploadDocumentWithData toUpload,@PathVariable ("id")Long classId){
+	public ResponseEntity<List<DocumentDTO>> upload(@ModelAttribute UploadDocumentWithData toUpload,@PathVariable ("id")Long classId){
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
 		List<DocumentDTO> toReturn= this.documentService.upload(toUpload,classId,username);
 		return ResponseEntity.ok(toReturn);
@@ -38,14 +39,14 @@ public class DocumentController {
 	
 	@DeleteMapping("/{id}")
 	@Secured("TEACHER")
-	public ResponseEntity<?> delete(@PathVariable("id") Long documentId){
+	public ResponseEntity delete(@PathVariable("id") Long documentId){
 		String username=PrincipalUtils.extractPrincipal(SecurityContextHolder.getContext().getAuthentication());
 		try {
 			this.documentService.delete(documentId,username);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-		return ResponseEntity.ok().build();
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping("/{id}")

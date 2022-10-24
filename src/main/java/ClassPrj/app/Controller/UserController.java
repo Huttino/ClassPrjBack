@@ -4,6 +4,7 @@ package ClassPrj.app.Controller;
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Mapper.TeacherMapper;
 import ClassPrj.app.Model.Dto.ClassRoomDTO;
+import ClassPrj.app.Model.Dto.UserDTO;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.UpdatePasswordRequest;
 import ClassPrj.app.Model.Request.UpdateUserRequest;
@@ -15,6 +16,7 @@ import ClassPrj.app.domain.Teacher;
 import ClassPrj.app.security.PrincipalUtils;
 import ClassPrj.app.security.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,35 +46,35 @@ public class UserController {
 
     @PutMapping("/classRoom/{id}")
     @Secured("STUDENT")
-    public ResponseEntity<?> join(@PathVariable(name="id") Long classRoomId){
+    public ResponseEntity join(@PathVariable(name="id") Long classRoomId){
         Long userId = PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
         this.classRoomService.join(classRoomId,userId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/classRoom/{id}")
     @Secured("STUDENT")
-    public ResponseEntity<?> leave(@PathVariable(name="id") Long classRoomId){
+    public ResponseEntity leave(@PathVariable(name="id") Long classRoomId){
         Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
         this.classRoomService.leave(classRoomId,userId);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/password")
-    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
+    public ResponseEntity updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
 
         this.userService.updatePassword(updatePasswordRequest);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("")
-    public ResponseEntity<?> update(@RequestBody UpdateUserRequest updateUserRequest){
+    public ResponseEntity update(@RequestBody UpdateUserRequest updateUserRequest){
     	this.userService.updateUser(updateUserRequest);
-    	return ResponseEntity.ok().build();
+    	return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getMe(){
+    public ResponseEntity<? extends UserDTO> getMe(){
         UserDetailImpl detailImpl= PrincipalUtils.extractPrincipalObject(SecurityContextHolder.getContext().getAuthentication());
         if (detailImpl.getAuthorities().stream().anyMatch(x-> x.getAuthority().equals(ROLEVALUE.STUDENT.getRoleName()))){
             return ResponseEntity.ok(studentService.getStudent(detailImpl.getId()));
