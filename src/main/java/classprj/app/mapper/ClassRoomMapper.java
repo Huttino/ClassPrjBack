@@ -8,18 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassRoomMapper {
-	public static ClassRoomDTO entityToDto(ClassRoom classRoom, boolean notGraded) {
+	public static ClassRoomDTO entityToDto(ClassRoom classRoom) {
 		ClassRoomDTO toReturn = new ClassRoomDTO();
 		toReturn.setId(classRoom.getId());
 		toReturn.setCreator(classRoom.getCreator().getFirstName() + " " + classRoom.getCreator().getLastName());
 		toReturn.setClassName(classRoom.getClassName());
 		List<StudentInClass> members = new ArrayList<>();
-		if (classRoom.getMembers() != null&& !notGraded) {
-			classRoom.getMembers().forEach(x -> members.add(new StudentInClass(x.getStudent().getId(), x.getStudent().getUsername(),x.getGrade())));
-		}
-		if(classRoom.getMembers()!=null&& notGraded){
-			classRoom.getMembers().forEach(x -> members.add(new StudentInClass(x.getStudent().getId(), x.getStudent().getUsername())));
-		}
+		if(classRoom.getMembers() != null)
+			if(classRoom.getMembers().stream().allMatch(x->x.getGrade()==null)) {
+				classRoom.getMembers().forEach(x -> members.add(new StudentInClass(x.getStudent().getId(), x.getStudent().getUsername(),x.getGrade())));
+			}
+			else{
+				classRoom.getMembers().forEach(x -> members.add(new StudentInClass(x.getStudent().getId(), x.getStudent().getUsername())));
+			}
 		List<DocumentDTO> toSetDocument = new ArrayList<>();
 		if (classRoom.getDocuments() != null) {
 			classRoom.getDocuments().forEach(x -> toSetDocument.add(DocumentMapper.entityToDTO(x)));

@@ -91,7 +91,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         if (this.teacherRepository.existsById(userId)) {
             toReturn = ClassRoomMapper.entityToDtoTeacher(optionalToAdapt.get());
         } else
-            toReturn = ClassRoomMapper.entityToDto(optionalToAdapt.get(), memberRepository.existsMembersByClassRoomIdAndGradeIsNull(id));
+            toReturn = ClassRoomMapper.entityToDto(optionalToAdapt.get());
         return toReturn;
     }
 
