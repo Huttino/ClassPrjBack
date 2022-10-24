@@ -1,19 +1,19 @@
 package ClassPrj.app.Model;
 
 public class AuthToken {
-    private String accesstoken;
+    private String accessToken;
     private String type = "Bearer";
     private String refreshToken;
 
     public AuthToken() {
     }
 
-    public String getAccesstoken() {
-		return accesstoken;
+    public String getAccessToken() {
+		return accessToken;
 	}
 
-	public void setAccesstoken(String accesstoken) {
-		this.accesstoken = accesstoken;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	public String getRefreshToken() {
@@ -25,7 +25,7 @@ public class AuthToken {
 	}
 
 	public AuthToken(String token) {
-        this.accesstoken = token;
+        this.accessToken = token;
     }
 
 
@@ -37,15 +37,15 @@ public class AuthToken {
         this.type = type;
     }
 
-	public AuthToken(String accesstoken, String refreshToken) {
+	public AuthToken(String accessToken, String refreshToken) {
 		super();
-		this.accesstoken = accesstoken;
+		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 	}
 
 	@Override
 	public String toString() {
-		return "AuthToken [accesstoken=" + accesstoken + ", type=" + type + ", refreshToken=" + refreshToken + "]";
+		return "AuthToken [accesstoken=" + accessToken + ", type=" + type + ", refreshToken=" + refreshToken + "]";
 	}
 
     

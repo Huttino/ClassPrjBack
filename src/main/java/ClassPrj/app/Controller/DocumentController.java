@@ -3,7 +3,7 @@ package ClassPrj.app.Controller;
 import ClassPrj.app.Exception.ApiException;
 import ClassPrj.app.Model.Dto.DocumentDTO;
 import ClassPrj.app.Model.Request.UploadDocumentWithData;
-import ClassPrj.app.Service.Impl.DocumentServiceImpl;
+import ClassPrj.app.Service.DocumentService;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +20,19 @@ import java.util.List;
 @RestController
 public class DocumentController {
 	
-	private final DocumentServiceImpl documentServiceImpl;
+	private final DocumentService documentService;
 
 	@Autowired
-	public DocumentController(DocumentServiceImpl documentServiceImpl) {
+	public DocumentController(DocumentService documentService) {
 		super();
-		this.documentServiceImpl = documentServiceImpl;
+		this.documentService = documentService;
 	}
 
 	@PostMapping("/{id}")
 	@Secured("TEACHER")
 	public ResponseEntity<?> upload(@ModelAttribute UploadDocumentWithData toUpload,@PathVariable ("id")Long classId){
 		String username =PrincipalUtils.extractPrincipal( SecurityContextHolder.getContext().getAuthentication());
-		List<DocumentDTO> toReturn= this.documentServiceImpl.upload(toUpload,classId,username);
+		List<DocumentDTO> toReturn= this.documentService.upload(toUpload,classId,username);
 		return ResponseEntity.ok(toReturn);
 	}
 	
@@ -41,7 +41,7 @@ public class DocumentController {
 	public ResponseEntity<?> delete(@PathVariable("id") Long documentId){
 		String username=PrincipalUtils.extractPrincipal(SecurityContextHolder.getContext().getAuthentication());
 		try {
-			this.documentServiceImpl.delete(documentId,username);
+			this.documentService.delete(documentId,username);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -53,7 +53,7 @@ public class DocumentController {
 	public void download(@PathVariable("id")Long documentId,HttpServletResponse response){
 		Long userid=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		try {
-			response.getOutputStream().write(this.documentServiceImpl.getFile(documentId,userid));
+			response.getOutputStream().write(this.documentService.getFile(documentId,userid));
 			response.flushBuffer();
 		} catch (IOException e) {
 			throw new ApiException("IOError writing file to output stream");

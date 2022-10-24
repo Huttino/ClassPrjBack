@@ -6,8 +6,8 @@ import ClassPrj.app.Model.Request.AddStudentRequest;
 import ClassPrj.app.Model.Request.NewClassRoomRequest;
 import ClassPrj.app.Model.Request.StudentClassRequest;
 import ClassPrj.app.Model.Request.UpdateGradeRequest;
-import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
-import ClassPrj.app.Service.Impl.TeacherServiceImpl;
+import ClassPrj.app.Service.ClassRoomService;
+import ClassPrj.app.Service.TeacherService;
 import ClassPrj.app.security.PrincipalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +24,17 @@ import java.util.List;
 
 public class ClassRoomController {
 	
-	private final ClassRoomServiceImpl classRoomServiceImpl;
-	private final TeacherServiceImpl teacherServiceImpl;
+	private final ClassRoomService classRoomService;
+	private final TeacherService teacherService;
 
 	
 	@Autowired
 	public ClassRoomController(
-			ClassRoomServiceImpl classRoomServiceImpl,
-			TeacherServiceImpl teacherServiceImpl
+			ClassRoomService classRoomService,
+			TeacherService teacherService
 	) {
-		this.classRoomServiceImpl=classRoomServiceImpl;
-		this.teacherServiceImpl=teacherServiceImpl;
+		this.classRoomService=classRoomService;
+		this.teacherService=teacherService;
 
 	}
 
@@ -42,34 +42,34 @@ public class ClassRoomController {
 	@PostMapping("")
 	public ResponseEntity<ClassRoomDTO> Create(@Valid @RequestBody NewClassRoomRequest nc){
 		Long teacherId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		return ResponseEntity.ok().body(this.classRoomServiceImpl.create(nc.getClassname(),teacherId));
+		return ResponseEntity.ok().body(this.classRoomService.create(nc.getClassname(),teacherId));
 	}
 
 	@Secured("TEACHER")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable(name="id")Long id){
 		Long creatorId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		this.classRoomServiceImpl.delete(id,creatorId);
+		this.classRoomService.delete(id,creatorId);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ClassRoomDTO> getClass(@PathVariable(name="id")Long id){
 		Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		ClassRoomDTO toReturn=this.classRoomServiceImpl.getClassById(id,userId);
+		ClassRoomDTO toReturn=this.classRoomService.getClassById(id,userId);
 		return ResponseEntity.ok(toReturn);
 	}
 
 	@GetMapping("/creator/{id}")
 	@Secured("TEACHER")
 	public ResponseEntity<List<ClassRoomDTO>> getClassesFrom(@PathVariable(name="id")Long teacherId){
-		List<ClassRoomDTO> toReturn=this.classRoomServiceImpl.getClassesFrom(teacherId);
+		List<ClassRoomDTO> toReturn=this.classRoomService.getClassesFrom(teacherId);
 		return ResponseEntity.ok(toReturn);
 	}
 
 	@GetMapping("")
 	public ResponseEntity<List<ClassRoomDTO>> getAllClass(){
-		List<ClassRoomDTO> toReturn=this.classRoomServiceImpl.getAllClass();
+		List<ClassRoomDTO> toReturn=this.classRoomService.getAllClass();
 		return ResponseEntity.ok(toReturn);
 	}
 
@@ -77,7 +77,7 @@ public class ClassRoomController {
 	@Secured("TEACHER")
 	public ResponseEntity<?> assignGrade(@PathVariable(name="id")Long classId,@RequestBody UpdateGradeRequest updateGradeRequest){
 		Long myId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		this.teacherServiceImpl.assignGrade(myId,classId,updateGradeRequest);
+		this.teacherService.assignGrade(myId,classId,updateGradeRequest);
 		return ResponseEntity.ok().build();
 	}
 
@@ -85,7 +85,7 @@ public class ClassRoomController {
 	@Secured("TEACHER")
 	public ResponseEntity<?> removeFromClass(@RequestBody StudentClassRequest removeFromClassRequest){
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		this.teacherServiceImpl.removeFromClass(removeFromClassRequest,myId);
+		this.teacherService.removeFromClass(removeFromClassRequest,myId);
 		return ResponseEntity.ok().build();
 	}
 
@@ -94,7 +94,7 @@ public class ClassRoomController {
 	public ResponseEntity<StudentInClass> addToClass(@RequestBody AddStudentRequest addToClass){
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 
-		return ResponseEntity.ok(this.teacherServiceImpl.addToClass(addToClass,myId));
+		return ResponseEntity.ok(this.teacherService.addToClass(addToClass,myId));
 	}
 
 }

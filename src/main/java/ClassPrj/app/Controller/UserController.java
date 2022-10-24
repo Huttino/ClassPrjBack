@@ -7,10 +7,10 @@ import ClassPrj.app.Model.Dto.ClassRoomDTO;
 import ClassPrj.app.Model.ROLEVALUE;
 import ClassPrj.app.Model.Request.UpdatePasswordRequest;
 import ClassPrj.app.Model.Request.UpdateUserRequest;
-import ClassPrj.app.Service.Impl.ClassRoomServiceImpl;
-import ClassPrj.app.Service.Impl.StudentServiceImpl;
-import ClassPrj.app.Service.Impl.TeacherServiceImpl;
-import ClassPrj.app.Service.Impl.UserServiceImpl;
+import ClassPrj.app.Service.ClassRoomService;
+import ClassPrj.app.Service.StudentService;
+import ClassPrj.app.Service.TeacherService;
+import ClassPrj.app.Service.UserService;
 import ClassPrj.app.domain.Teacher;
 import ClassPrj.app.security.PrincipalUtils;
 import ClassPrj.app.security.UserDetailImpl;
@@ -29,24 +29,24 @@ import java.util.Optional;
 @RequestMapping("/api/me")
 public class UserController {
 
-    private final ClassRoomServiceImpl classRoomServiceImpl;
-    private final UserServiceImpl userServiceImpl;
-    private final StudentServiceImpl studentServiceimpl;
-    private final TeacherServiceImpl teacherServiceImpl;
+    private final ClassRoomService classRoomService;
+    private final UserService userService;
+    private final StudentService studentService;
+    private final TeacherService teacherService;
 
     @Autowired
-    public UserController(ClassRoomServiceImpl classRoomServiceImpl, UserServiceImpl userServiceImpl,StudentServiceImpl studentServiceimpl,TeacherServiceImpl teacherServiceImpl) {
-        this.classRoomServiceImpl = classRoomServiceImpl;
-        this.userServiceImpl=userServiceImpl;
-        this.studentServiceimpl=studentServiceimpl;
-        this.teacherServiceImpl=teacherServiceImpl;
+    public UserController(ClassRoomService classRoomService, UserService userService,StudentService studentService,TeacherService teacherService) {
+        this.classRoomService = classRoomService;
+        this.userService=userService;
+        this.studentService=studentService;
+        this.teacherService=teacherService;
     }
 
     @PutMapping("/classRoom/{id}")
     @Secured("STUDENT")
     public ResponseEntity<?> join(@PathVariable(name="id") Long classRoomId){
         Long userId = PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-        this.classRoomServiceImpl.join(classRoomId,userId);
+        this.classRoomService.join(classRoomId,userId);
         return ResponseEntity.ok().build();
     }
 
@@ -54,20 +54,20 @@ public class UserController {
     @Secured("STUDENT")
     public ResponseEntity<?> leave(@PathVariable(name="id") Long classRoomId){
         Long userId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-        this.classRoomServiceImpl.leave(classRoomId,userId);
+        this.classRoomService.leave(classRoomId,userId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/password")
     public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest updatePasswordRequest){
 
-        this.userServiceImpl.updatePassword(updatePasswordRequest);
+        this.userService.updatePassword(updatePasswordRequest);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("")
     public ResponseEntity<?> update(@RequestBody UpdateUserRequest updateUserRequest){
-    	this.userServiceImpl.updateUser(updateUserRequest);
+    	this.userService.updateUser(updateUserRequest);
     	return ResponseEntity.ok().build();
     }
 
@@ -75,10 +75,10 @@ public class UserController {
     public ResponseEntity<?> getMe(){
         UserDetailImpl detailImpl= PrincipalUtils.extractPrincipalObject(SecurityContextHolder.getContext().getAuthentication());
         if (detailImpl.getAuthorities().stream().anyMatch(x-> x.getAuthority().equals(ROLEVALUE.STUDENT.getRoleName()))){
-            return ResponseEntity.ok(studentServiceimpl.getStudent(detailImpl.getId()));
+            return ResponseEntity.ok(studentService.getStudent(detailImpl.getId()));
         }
         else if(detailImpl.getAuthorities().stream().anyMatch(x-> x.getAuthority().equals(ROLEVALUE.TEACHER.getRoleName()))){
-            Optional<Teacher> toReturn= teacherServiceImpl.findById(detailImpl.getId());
+            Optional<Teacher> toReturn= teacherService.findById(detailImpl.getId());
             if(toReturn.isEmpty())throw new ApiException("Teacher not found");
             return ResponseEntity.ok(TeacherMapper.EntityToDTO(toReturn.get()));
         }
@@ -89,7 +89,7 @@ public class UserController {
     @Secured("STUDENT")
     public ResponseEntity<List<ClassRoomDTO>> getMyClasses(){
         Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-        List<ClassRoomDTO> toReturn= this.studentServiceimpl.getClasses(myId);
+        List<ClassRoomDTO> toReturn= this.studentService.getClasses(myId);
         return ResponseEntity.ok(toReturn);
     }
 

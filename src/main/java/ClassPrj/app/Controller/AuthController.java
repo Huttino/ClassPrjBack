@@ -3,7 +3,7 @@ package ClassPrj.app.Controller;
 import ClassPrj.app.Model.AuthToken;
 import ClassPrj.app.Model.Request.SignInRequest;
 import ClassPrj.app.Model.Request.SignUpRequest;
-import ClassPrj.app.Service.Impl.UserServiceImpl;
+import ClassPrj.app.Service.UserService;
 import ClassPrj.app.security.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +25,22 @@ public class AuthController {
 
 	
 	private final AuthenticationManager authenticationManager;
-	private final UserServiceImpl userServiceImpl;
+	private final UserService userService;
 	private final JWTUtils jwtUtils;
 
 	@Autowired
-	public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl,
+	public AuthController(AuthenticationManager authenticationManager, UserService userService,
 						  JWTUtils jwtUtils) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtils = jwtUtils;
-		this.userServiceImpl = userServiceImpl ;
+		this.userService = userService ;
 	}
 	
 	
 	
 	@PostMapping("/signup")
 	public ResponseEntity<AuthToken> signup(@Valid @RequestBody SignUpRequest request){
-		URI created= userServiceImpl.signUp(request);
+		URI created= userService.signUp(request);
 		Authentication authentication=authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(
 						request.getUsername(), request.getPassword()));
