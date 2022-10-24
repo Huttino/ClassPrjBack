@@ -2,13 +2,12 @@ package classprj.app.controller;
 
 import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.StudentInClass;
-import classprj.app.model.request.AddStudentRequest;
-import classprj.app.model.request.NewClassRoomRequest;
-import classprj.app.model.request.StudentClassRequest;
-import classprj.app.model.request.UpdateGradeRequest;
+import classprj.app.model.dto.VideoLessonDTO;
+import classprj.app.model.request.*;
+import classprj.app.security.PrincipalUtils;
 import classprj.app.service.ClassRoomService;
 import classprj.app.service.TeacherService;
-import classprj.app.security.PrincipalUtils;
+import classprj.app.service.VideoLessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +26,18 @@ public class ClassRoomController {
 	
 	private final ClassRoomService classRoomService;
 	private final TeacherService teacherService;
+	private final VideoLessonService videoLessonService;
 
 	
 	@Autowired
 	public ClassRoomController(
 			ClassRoomService classRoomService,
-			TeacherService teacherService
+			TeacherService teacherService,
+			VideoLessonService videoLessonService
 	) {
 		this.classRoomService=classRoomService;
 		this.teacherService=teacherService;
+		this.videoLessonService=videoLessonService;
 
 	}
 
@@ -96,6 +98,13 @@ public class ClassRoomController {
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 
 		return ResponseEntity.ok(this.teacherService.addToClass(addToClass,myId));
+	}
+
+	@PostMapping("/{id}/lesson")
+	@Secured("TEACHER")
+	public ResponseEntity<VideoLessonDTO> addLesson(@PathVariable(name="id")Long classId,@RequestBody newVideoLessonRequest request){
+		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		return ResponseEntity.ok(this.videoLessonService.addLesson(request,classId,myId));
 	}
 
 }

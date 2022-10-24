@@ -1,15 +1,17 @@
 package classprj.app.model.request;
 
+import java.util.List;
+
 public class newVideoLessonRequest {
     private String youTubeUrl;
     private String title;
     private String description;
-    private long[] documentAttached;
+    private List<Long> documentAttached;
 
     public newVideoLessonRequest() {
     }
 
-    public newVideoLessonRequest(String youTubeUrl, String title, String description, long[] documentAttached) {
+    public newVideoLessonRequest(String youTubeUrl, String title, String description, List<Long> documentAttached) {
         this.youTubeUrl = youTubeUrl;
         this.title = title;
         this.description = description;
@@ -40,11 +42,11 @@ public class newVideoLessonRequest {
         this.description = description;
     }
 
-    public long[] getDocumentAttached() {
+    public List<Long> getDocumentAttached() {
         return documentAttached;
     }
 
-    public void setDocumentAttached(long[] documentAttached) {
+    public void setDocumentAttached(List<Long> documentAttached) {
         this.documentAttached = documentAttached;
     }
 }
