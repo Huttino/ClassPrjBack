@@ -1,6 +1,7 @@
 package classprj.app.service;
 
 import classprj.app.model.dto.ClassRoomDTO;
+import classprj.app.model.dto.ClassRoomStrippedDTO;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface ClassRoomService {
 	void delete(Long classRoomId,Long teacherId);
 	ClassRoomDTO getClassById(Long id,Long userId);
 
-    List<ClassRoomDTO> getAllClass();
+    List<ClassRoomStrippedDTO> getAllClass();
 
     List<ClassRoomDTO> getClassesFrom(Long teacherId);
 }

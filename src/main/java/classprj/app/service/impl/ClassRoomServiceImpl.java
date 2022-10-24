@@ -1,16 +1,17 @@
 package classprj.app.service.impl;
 
+import classprj.app.domain.ClassRoom;
+import classprj.app.domain.Member;
+import classprj.app.domain.Teacher;
 import classprj.app.exception.ApiException;
 import classprj.app.mapper.ClassRoomMapper;
 import classprj.app.model.dto.ClassRoomDTO;
+import classprj.app.model.dto.ClassRoomStrippedDTO;
 import classprj.app.repository.ClassRoomRepository;
 import classprj.app.repository.MemberRepository;
 import classprj.app.repository.StudentRepository;
 import classprj.app.repository.TeacherRepository;
 import classprj.app.service.ClassRoomService;
-import classprj.app.domain.ClassRoom;
-import classprj.app.domain.Member;
-import classprj.app.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -95,11 +96,11 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public List<ClassRoomDTO> getAllClass() {
-        List<ClassRoomDTO> toReturn = new ArrayList<>();
+    public List<ClassRoomStrippedDTO> getAllClass() {
+        List<ClassRoomStrippedDTO> toReturn = new ArrayList<>();
         List<ClassRoom> classRoomList = this.classRoomRepository.findAll();
         if (!classRoomList.isEmpty()) {
-            classRoomList.forEach(x -> toReturn.add(ClassRoomMapper.entityToDto(x, !memberRepository.existsMembersByClassRoomIdAndGradeIsNull(x.getId()))));
+            classRoomList.forEach(x -> toReturn.add(ClassRoomMapper.entityToStrippedDto(x, !memberRepository.existsMembersByClassRoomIdAndGradeIsNull(x.getId()))));
         }
         return toReturn;
     }

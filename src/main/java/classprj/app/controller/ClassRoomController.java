@@ -1,6 +1,7 @@
 package classprj.app.controller;
 
 import classprj.app.model.dto.ClassRoomDTO;
+import classprj.app.model.dto.ClassRoomStrippedDTO;
 import classprj.app.model.dto.StudentInClass;
 import classprj.app.model.dto.VideoLessonDTO;
 import classprj.app.model.request.*;
@@ -71,8 +72,8 @@ public class ClassRoomController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<List<ClassRoomDTO>> getAllClass(){
-		List<ClassRoomDTO> toReturn=this.classRoomService.getAllClass();
+	public ResponseEntity<List<ClassRoomStrippedDTO>> getAllClass(){
+		List<ClassRoomStrippedDTO> toReturn=this.classRoomService.getAllClass();
 		return ResponseEntity.ok(toReturn);
 	}
 
