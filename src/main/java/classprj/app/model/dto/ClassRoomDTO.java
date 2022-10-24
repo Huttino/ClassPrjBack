@@ -10,18 +10,18 @@ public class ClassRoomDTO {
 	private String creator;
 	private List<DocumentDTO> uploadedDocuments;
 	private List<StudentInClass> members;
-	
-	
-	
-	public ClassRoomDTO(Long id, String className, String creator, List<StudentInClass> members,List<DocumentDTO> uploadedDocuments) {
-		super();
+	private List<VideoLessonDTO> lessons;
+
+
+	public ClassRoomDTO(Long id, String className, String creator, List<DocumentDTO> uploadedDocuments, List<StudentInClass> members, List<VideoLessonDTO> lessons) {
 		this.id = id;
 		this.className = className;
 		this.creator = creator;
+		this.uploadedDocuments = uploadedDocuments;
 		this.members = members;
-		this.uploadedDocuments=uploadedDocuments;
+		this.lessons = lessons;
 	}
-	
+
 	public ClassRoomDTO() {
 	
 	}
@@ -58,6 +58,12 @@ public class ClassRoomDTO {
 	public void setMembers(List<StudentInClass> members) {
 		this.members = members;
 	}
-	
-	
+
+	public List<VideoLessonDTO> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<VideoLessonDTO> lessons) {
+		this.lessons = lessons;
+	}
 }

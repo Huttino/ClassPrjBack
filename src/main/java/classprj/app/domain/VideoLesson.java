@@ -1,6 +1,9 @@
 package classprj.app.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,6 +19,9 @@ public class VideoLesson {
     private String title;
     @Column
     private String description;
+    @Column
+    @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
+    private LocalDateTime dateOfUpload;
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name="lessonId"),inverseJoinColumns = @JoinColumn(name="documentId"))
     private List<Document> relatedDocuments;
@@ -27,13 +33,14 @@ public class VideoLesson {
     public VideoLesson() {
     }
 
-    public VideoLesson(Long id, String youTubeLink, String title, String description, List<Document> relatedDocuments,ClassRoom classRoom) {
+    public VideoLesson(Long id, String youTubeLink, String title, String description, LocalDateTime dateOfUpload, List<Document> relatedDocuments, ClassRoom classRoom) {
         Id = id;
         this.youTubeLink = youTubeLink;
         this.title = title;
         this.description = description;
+        this.dateOfUpload = dateOfUpload;
         this.relatedDocuments = relatedDocuments;
-        this.classRoom=classRoom;
+        this.classRoom = classRoom;
     }
 
     public Long getId() {
@@ -82,5 +89,13 @@ public class VideoLesson {
 
     public void setClassRoom(ClassRoom classRoom) {
         this.classRoom = classRoom;
+    }
+
+    public LocalDateTime getDateOfUpload() {
+        return dateOfUpload;
+    }
+
+    public void setDateOfUpload(LocalDateTime dateOfUpload) {
+        this.dateOfUpload = dateOfUpload;
     }
 }

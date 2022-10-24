@@ -1,5 +1,6 @@
 package classprj.app.model.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VideoLessonDTO {
@@ -7,8 +8,17 @@ public class VideoLessonDTO {
     private String title;
     private String description;
     private List<DocumentDTO> relatedDocuments;
+    private LocalDateTime dateOfUpload;
 
     public VideoLessonDTO() {
+    }
+
+    public VideoLessonDTO(String youTubeUrl, String title, String description, List<DocumentDTO> relatedDocuments, LocalDateTime dateOfUpload) {
+        this.youTubeUrl = youTubeUrl;
+        this.title = title;
+        this.description = description;
+        this.relatedDocuments = relatedDocuments;
+        this.dateOfUpload = dateOfUpload;
     }
 
     public VideoLessonDTO(String youTubeUrl, String title, String description, List<DocumentDTO> relatedDocuments) {
@@ -48,5 +58,13 @@ public class VideoLessonDTO {
 
     public void setRelatedDocuments(List<DocumentDTO> relatedDocuments) {
         this.relatedDocuments = relatedDocuments;
+    }
+
+    public LocalDateTime getDateOfUpload() {
+        return dateOfUpload;
+    }
+
+    public void setDateOfUpload(LocalDateTime dateOfUpload) {
+        this.dateOfUpload = dateOfUpload;
     }
 }

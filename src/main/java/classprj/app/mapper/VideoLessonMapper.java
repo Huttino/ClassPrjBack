@@ -19,6 +19,7 @@ public class VideoLessonMapper {
                 x-> toSet.add(DocumentMapper.entityToDTO(x))
 
         );
+        toReturn.setDateOfUpload(videoLesson.getDateOfUpload());
         return toReturn;
     }
 }
