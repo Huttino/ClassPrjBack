@@ -32,7 +32,7 @@ public class StudentMapper {
 		toReturn.setAuthority(toAdapt.getRole().getRoleName());
 		List<ClassInStudent> memberOf=new ArrayList<>();
 		toAdapt.getClassList().forEach(x->{
-			memberOf.add(new ClassInStudent(x.getClassRoom().getId(), x.getClassRoom().getClassName()));
+			memberOf.add(ClassRoomMapper.entityToSpecificDTO(x.getClassRoom()));
 		});
 		toReturn.setMemberOf(memberOf);
 		return toReturn;

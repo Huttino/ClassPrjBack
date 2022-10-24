@@ -26,21 +26,22 @@ public class ClassRoom {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="uploadedTo")
 	private List<Document> documents;
 
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "classRoom")
+	private List<VideoLesson> lessons;
 	
 
 	public ClassRoom() {
 	}
 
-	public ClassRoom(Long id, String className, Teacher creator, List<Member> members) {
-		super();
+	public ClassRoom(Long id, String className, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
 		this.id = id;
-		this.className = className.substring(0,1).toUpperCase()+className.substring(1);
+		this.className = className;
 		this.creator = creator;
 		this.members = members;
+		this.documents = documents;
+		this.lessons = lessons;
 	}
 
-	
-	
 	public ClassRoom(String className) {
 		this.className = className.substring(0,1).toUpperCase()+className.substring(1);
 	}
@@ -90,6 +91,14 @@ public class ClassRoom {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	public List<VideoLesson> getLessons() {
+		return lessons;
+	}
+
+	public void setLessons(List<VideoLesson> lessons) {
+		this.lessons = lessons;
 	}
 
 	@Override

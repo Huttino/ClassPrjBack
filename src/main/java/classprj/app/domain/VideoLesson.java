@@ -20,15 +20,20 @@ public class VideoLesson {
     @JoinTable(joinColumns = @JoinColumn(name="lessonId"),inverseJoinColumns = @JoinColumn(name="documentId"))
     private List<Document> relatedDocuments;
 
+    @ManyToOne
+    @JoinColumn(name="classRoomId",nullable = false,updatable = false)
+    private ClassRoom classRoom;
+
     public VideoLesson() {
     }
 
-    public VideoLesson(Long id, String youTubeLink, String title, String description, List<Document> relatedDocuments) {
+    public VideoLesson(Long id, String youTubeLink, String title, String description, List<Document> relatedDocuments,ClassRoom classRoom) {
         Id = id;
         this.youTubeLink = youTubeLink;
         this.title = title;
         this.description = description;
         this.relatedDocuments = relatedDocuments;
+        this.classRoom=classRoom;
     }
 
     public Long getId() {
@@ -69,5 +74,13 @@ public class VideoLesson {
 
     public void setRelatedDocuments(List<Document> relatedDocuments) {
         this.relatedDocuments = relatedDocuments;
+    }
+
+    public ClassRoom getClassRoom() {
+        return classRoom;
+    }
+
+    public void setClassRoom(ClassRoom classRoom) {
+        this.classRoom = classRoom;
     }
 }

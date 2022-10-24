@@ -1,20 +1,27 @@
 package classprj.app.model.dto;
 
+import java.util.List;
+
 public class ClassInStudent {
-    public Long id;
-    public String className;
-    public Long grade;
+    private Long id;
+    private String className;
 
-    public ClassInStudent(Long id,String className,Long grade) {
-        this.id = id;
-        this.className = className;
-        this.grade=grade;
-    }
+    private List<VideoLessonDTO> videoLessons;
 
-    public ClassInStudent(Long id, String className) {
+    public ClassInStudent(Long id,String className) {
         this.id = id;
         this.className = className;
     }
+
+    public ClassInStudent(Long id, String className, List<VideoLessonDTO> videoLessons) {
+        this.id = id;
+        this.className = className;
+        this.videoLessons = videoLessons;
+    }
+
+    public ClassInStudent() {
+    }
+
 
     public Long getId() {
         return id;
@@ -32,11 +39,11 @@ public class ClassInStudent {
         this.className = className;
     }
 
-    public Long getGrade() {
-        return grade;
+    public List<VideoLessonDTO> getVideoLessons() {
+        return videoLessons;
     }
 
-    public void setGrade(Long grade) {
-        this.grade = grade;
+    public void setVideoLessons(List<VideoLessonDTO> videoLessons) {
+        this.videoLessons = videoLessons;
     }
 }

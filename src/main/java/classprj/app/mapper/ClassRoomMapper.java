@@ -1,8 +1,6 @@
 package classprj.app.mapper;
 
-import classprj.app.model.dto.ClassRoomDTO;
-import classprj.app.model.dto.DocumentDTO;
-import classprj.app.model.dto.StudentInClass;
+import classprj.app.model.dto.*;
 import classprj.app.domain.ClassRoom;
 
 import java.util.ArrayList;
@@ -44,6 +42,16 @@ public class ClassRoomMapper {
 		}
 		toReturn.setUploadedDocuments(toSetDocument);
 		toReturn.setMembers(members);
+		return toReturn;
+	}
+
+	public static ClassInStudent entityToSpecificDTO(ClassRoom classRoom){
+		ClassInStudent toReturn= new ClassInStudent();
+		toReturn.setClassName(classRoom.getClassName());
+		toReturn.setId(classRoom.getId());
+		ArrayList<VideoLessonDTO> toSet=new ArrayList<>();
+		toReturn.setVideoLessons(toSet);
+		classRoom.getLessons().forEach(x->toSet.add( VideoLessonMapper.entityToDTO(x)));
 		return toReturn;
 	}
 }

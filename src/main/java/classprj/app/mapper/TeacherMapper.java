@@ -16,11 +16,11 @@ public class TeacherMapper {
 		toReturn.setFirstName(teacher.getFirstName());
 		toReturn.setLastName(teacher.getLastName());
 		toReturn.setAuthority(teacher.getRole().getRoleName());
-		List<ClassRoomDTO> mapToadd=new ArrayList<>();
+		List<ClassRoomDTO> mapToAdd=new ArrayList<>();
 		teacher.getHasCreated().forEach(c->{
-			mapToadd.add(ClassRoomMapper.entityToDtoTeacher(c));
+			mapToAdd.add(ClassRoomMapper.entityToDtoTeacher(c));
 		});
-		toReturn.setHasCreated(mapToadd);
+		toReturn.setHasCreated(mapToAdd);
 		return toReturn;
 	}
 }
