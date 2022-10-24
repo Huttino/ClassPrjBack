@@ -25,6 +25,11 @@ public class ClassRoomMapper {
 		}
 		toReturn.setUploadedDocuments(toSetDocument);
 		toReturn.setMembers(members);
+		ArrayList<VideoLessonDTO> toSet=new ArrayList<>();
+		classRoom.getLessons().forEach(
+				x->toSet.add(VideoLessonMapper.entityToDTO(x))
+		);
+		toReturn.setLessons(toSet);
 		return toReturn;
 	}
 	public static ClassRoomDTO entityToDtoTeacher(ClassRoom classRoom){
@@ -42,6 +47,11 @@ public class ClassRoomMapper {
 		}
 		toReturn.setUploadedDocuments(toSetDocument);
 		toReturn.setMembers(members);
+		ArrayList<VideoLessonDTO> toSet=new ArrayList<>();
+		classRoom.getLessons().forEach(
+				x->toSet.add(VideoLessonMapper.entityToDTO(x))
+		);
+		toReturn.setLessons(toSet);
 		return toReturn;
 	}
 
