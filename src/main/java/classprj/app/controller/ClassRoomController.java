@@ -103,7 +103,7 @@ public class ClassRoomController {
 
 	@PostMapping("/{id}/lesson")
 	@Secured("TEACHER")
-	public ResponseEntity<VideoLessonDTO> addLesson(@PathVariable(name="id")Long classId,@RequestBody newVideoLessonRequest request){
+	public ResponseEntity<VideoLessonDTO> addLesson(@PathVariable(name="id")Long classId,@RequestBody @Valid newVideoLessonRequest request){
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		return ResponseEntity.ok(this.videoLessonService.addLesson(request,classId,myId));
 	}

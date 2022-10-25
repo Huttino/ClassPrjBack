@@ -13,11 +13,11 @@ public class VideoLesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long Id;
 
-    @Column
+    @Column(nullable = false)
     private String youTubeLink;
-    @Column
+    @Column(nullable = false)
     private String title;
-    @Column
+    @Column(nullable = true)
     private String description;
     @Column
     @DateTimeFormat(pattern = "dd/MM/yyyy hh:mm")
