@@ -1,8 +1,8 @@
 package classprj.app.domain;
 
 import javax.persistence.*;
-import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -37,22 +37,25 @@ public class Document {
 	@JoinColumn(name="ClassId",nullable = false)
 	private ClassRoom uploadedTo;
 
+	@ManyToMany(mappedBy = "relatedDocuments")
+	private List<VideoLesson> relatedTo;
 
 
 	public Document() {
 	}
 
-	public Document(Long id, String title, String type, byte[] file, String notes, Teacher uploadedBy,
-			ClassRoom uploadedTo,LocalDateTime dateOfUpload) throws IOException {
+	public Document(Long id, String title, String type, byte[] file, String notes, LocalDateTime dateOfUpload, Teacher uploadedBy, ClassRoom uploadedTo, List<VideoLesson> relatedTo) {
 		this.id = id;
 		this.title = title;
 		this.type = type;
 		this.file = file;
 		this.notes = notes;
+		this.dateOfUpload = dateOfUpload;
 		this.uploadedBy = uploadedBy;
 		this.uploadedTo = uploadedTo;
-		this.dateOfUpload=dateOfUpload;
+		this.relatedTo = relatedTo;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -117,6 +120,12 @@ public class Document {
 	public void setDateOfUpload(LocalDateTime dateOfUpload) {
 		this.dateOfUpload = dateOfUpload;
 	}
-	
-	
+
+	public List<VideoLesson> getRelatedTo() {
+		return relatedTo;
+	}
+
+	public void setRelatedTo(List<VideoLesson> relatedTo) {
+		this.relatedTo = relatedTo;
+	}
 }

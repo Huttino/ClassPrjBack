@@ -30,24 +30,44 @@ public class VideoLessonServiceImpl implements VideoLessonService {
             ClassRoomRepository classRoomRepository,
             DocumentRepository documentRepository
     ) {
-        this.videoLessonRepository=videoLessonRepository;
-        this.classRoomRepository=classRoomRepository;
-        this.documentRepository=documentRepository;
+        this.videoLessonRepository = videoLessonRepository;
+        this.classRoomRepository = classRoomRepository;
+        this.documentRepository = documentRepository;
     }
-
 
 
     @Override
     public VideoLessonDTO addLesson(newVideoLessonRequest request, Long classId, Long myId) {
-        Optional<ClassRoom> whereOptional=classRoomRepository.findById(classId);
-        if(whereOptional.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
-        ClassRoom where=whereOptional.get();
-        if(!where.getCreator().getId().equals(myId)) throw new ApiException("you didn't create this classRoom",HttpStatus.UNAUTHORIZED.value());
-        ArrayList<Document> documents=new ArrayList<>();
+        Optional<ClassRoom> whereOptional = classRoomRepository.findById(classId);
+        if (whereOptional.isEmpty()) throw new ApiException("ClassRoom not found", HttpStatus.NOT_FOUND.value());
+        ClassRoom where = whereOptional.get();
+        if (!where.getCreator().getId().equals(myId))
+            throw new ApiException("you didn't create this classRoom", HttpStatus.UNAUTHORIZED.value());
+        ArrayList<Document> documents = new ArrayList<>();
         request.getDocumentsAttached().forEach(
-                x-> this.documentRepository.findById(x).ifPresent( y-> documents.add(y))
+                x -> this.documentRepository.findById(x).ifPresent(y -> documents.add(y))
         );
-        VideoLesson saved=videoLessonRepository.save(VideoLessonMapper.newRequestToEntity(request,documents,where));
+        VideoLesson saved = videoLessonRepository.save(VideoLessonMapper.newRequestToEntity(request, documents, where));
         return VideoLessonMapper.entityToDTO(saved);
+    }
+
+    @Override
+    public void remove(Long myId, Long classId, Long lessonId) {
+        Optional<ClassRoom> whereOptional = classRoomRepository.findById(classId);
+        whereOptional.ifPresentOrElse(
+                x -> {
+                    if (x.getCreator().getId() != myId)
+                        throw new ApiException("You didn't create this classRoom", HttpStatus.UNAUTHORIZED.value());
+                }, () -> {
+                    throw new ApiException("classRoom not Found", HttpStatus.NOT_FOUND.value());
+                }
+        );
+        this.videoLessonRepository.findById(lessonId).ifPresent(
+                x->{
+                    x.setRelatedDocuments(null);
+                    this.videoLessonRepository.save(x);
+                }
+        );
+        this.videoLessonRepository.deleteById(lessonId);
     }
 }

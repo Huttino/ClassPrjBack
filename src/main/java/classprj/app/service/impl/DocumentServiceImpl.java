@@ -7,6 +7,7 @@ import classprj.app.model.request.UploadDocumentWithData;
 import classprj.app.repository.ClassRoomRepository;
 import classprj.app.repository.DocumentRepository;
 import classprj.app.repository.TeacherRepository;
+import classprj.app.repository.VideoLessonRepository;
 import classprj.app.service.DocumentService;
 import classprj.app.domain.ClassRoom;
 import classprj.app.domain.Document;
@@ -26,14 +27,16 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final TeacherRepository teacherRepository;
     private final ClassRoomRepository classRoomRepository;
+    private final VideoLessonRepository videoLessonRepository;
 
     @Autowired
     public DocumentServiceImpl(DocumentRepository documentRepository, TeacherRepository teacherRepository,
-                               ClassRoomRepository classRoomRepository) {
+                               ClassRoomRepository classRoomRepository, VideoLessonRepository videoLessonRepository) {
         super();
         this.documentRepository = documentRepository;
         this.teacherRepository = teacherRepository;
         this.classRoomRepository = classRoomRepository;
+        this.videoLessonRepository=videoLessonRepository;
     }
 
     @Override
@@ -57,8 +60,15 @@ public class DocumentServiceImpl implements DocumentService {
     public void delete(Long documentId,String username) {
         Optional<Document> toBeDeleted= this.documentRepository.findById(documentId);
         if (toBeDeleted.isEmpty())throw new ApiException("Document not found",HttpStatus.NOT_FOUND.value());
-        if (toBeDeleted.get().getUploadedBy().getUsername().equals(username)) {
-            this.documentRepository.delete(toBeDeleted.get());
+        Document toDelete=toBeDeleted.get();
+        if (toDelete.getUploadedBy().getUsername().equals(username)) {
+            toDelete.getRelatedTo().forEach(
+                    x-> {
+                        x.getRelatedDocuments().remove(toDelete);
+                        this.videoLessonRepository.save(x);
+                    }
+            );
+            this.documentRepository.deleteById(toDelete.getId());
         }
         else {
             throw new ApiException("Can't delete someone else's files",HttpStatus.UNAUTHORIZED.value());

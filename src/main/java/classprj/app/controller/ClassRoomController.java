@@ -108,4 +108,12 @@ public class ClassRoomController {
 		return ResponseEntity.ok(this.videoLessonService.addLesson(request,classId,myId));
 	}
 
+	@DeleteMapping("/{classId}/lesson/{lessonId}")
+	@Secured("TEACHER")
+	public ResponseEntity removeLesson(@PathVariable(name="classId")Long classId,@PathVariable(name="lessonId")Long lessonId){
+		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		this.videoLessonService.remove(myId,classId,lessonId);
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
 }
