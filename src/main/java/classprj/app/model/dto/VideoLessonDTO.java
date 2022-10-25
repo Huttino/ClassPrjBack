@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class VideoLessonDTO {
+    private Long Id;
     private String youTubeUrl;
     private String title;
     private String description;
@@ -13,7 +14,8 @@ public class VideoLessonDTO {
     public VideoLessonDTO() {
     }
 
-    public VideoLessonDTO(String youTubeUrl, String title, String description, List<DocumentDTO> relatedDocuments, LocalDateTime dateOfUpload) {
+    public VideoLessonDTO(Long Id,String youTubeUrl, String title, String description, List<DocumentDTO> relatedDocuments, LocalDateTime dateOfUpload) {
+        this.Id=Id;
         this.youTubeUrl = youTubeUrl;
         this.title = title;
         this.description = description;
@@ -66,5 +68,13 @@ public class VideoLessonDTO {
 
     public void setDateOfUpload(LocalDateTime dateOfUpload) {
         this.dateOfUpload = dateOfUpload;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
     }
 }

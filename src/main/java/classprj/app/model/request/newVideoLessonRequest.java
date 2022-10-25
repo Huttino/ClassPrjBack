@@ -6,16 +6,16 @@ public class newVideoLessonRequest {
     private String youTubeUrl;
     private String title;
     private String description;
-    private List<Long> documentAttached;
+    private List<Long> documentsAttached;
 
     public newVideoLessonRequest() {
     }
 
-    public newVideoLessonRequest(String youTubeUrl, String title, String description, List<Long> documentAttached) {
+    public newVideoLessonRequest(String youTubeUrl, String title, String description, List<Long> documentsAttached) {
         this.youTubeUrl = youTubeUrl;
         this.title = title;
         this.description = description;
-        this.documentAttached = documentAttached;
+        this.documentsAttached = documentsAttached;
     }
 
     public String getYouTubeUrl() {
@@ -42,11 +42,11 @@ public class newVideoLessonRequest {
         this.description = description;
     }
 
-    public List<Long> getDocumentAttached() {
-        return documentAttached;
+    public List<Long> getDocumentsAttached() {
+        return documentsAttached;
     }
 
-    public void setDocumentAttached(List<Long> documentAttached) {
-        this.documentAttached = documentAttached;
+    public void setDocumentAttached(List<Long> documentsAttached) {
+        this.documentsAttached = documentsAttached;
     }
 }
