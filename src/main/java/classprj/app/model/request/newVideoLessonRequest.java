@@ -1,9 +1,15 @@
 package classprj.app.model.request;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class newVideoLessonRequest {
+    @NotEmpty
+    @NotNull
     private String youTubeUrl;
+    @NotEmpty
+    @NotNull
     private String title;
     private String description;
     private List<Long> documentsAttached;
