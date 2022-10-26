@@ -79,4 +79,9 @@ public class ClassRoomMapper {
 		toReturn.setNumberOfDocuments(x.getDocuments().size());
 		return toReturn;
 	}
+
+	public static PublicClassRoomDTO entityToPublicDTO(ClassRoom classRoom){
+		PublicClassRoomDTO toReturn=new PublicClassRoomDTO(classRoom.getId(), classRoom.getDescription(), classRoom.getClassName());
+		return toReturn;
+	}
 }

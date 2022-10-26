@@ -16,6 +16,13 @@ public class ClassRoom {
 
 	@Column(name = "name",nullable = false)
 	private String className;
+
+	@Column(name="cover",nullable = true)
+	private byte[] cover;
+
+	@Column(name="description",nullable = false)
+	private String description;
+
 	@ManyToOne(cascade=CascadeType.DETACH)
 	@JoinColumn( name="creator_id",nullable = false)
 	private Teacher creator;
@@ -33,9 +40,11 @@ public class ClassRoom {
 	public ClassRoom() {
 	}
 
-	public ClassRoom(Long id, String className, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
+	public ClassRoom(Long id, String className, byte[] cover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
 		this.id = id;
 		this.className = className;
+		this.cover = cover;
+		this.description = description;
 		this.creator = creator;
 		this.members = members;
 		this.documents = documents;
@@ -112,7 +121,20 @@ public class ClassRoom {
 		ClassRoom other = (ClassRoom) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
+	public byte[] getCover() {
+		return cover;
+	}
+
+	public void setCover(byte[] cover) {
+		this.cover = cover;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
