@@ -17,6 +17,7 @@ public class ClassRoom {
 	@Column(name = "name",nullable = false)
 	private String className;
 
+	@Lob
 	@Column(name="cover",nullable = true)
 	private byte[] cover;
 
