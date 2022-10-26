@@ -1,5 +1,6 @@
 package classprj.app.controller;
 
+import classprj.app.exception.ApiException;
 import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.ClassRoomStrippedDTO;
 import classprj.app.model.dto.StudentInClass;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "*",maxAge = 3600)
@@ -114,6 +116,18 @@ public class ClassRoomController {
 		Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
 		this.videoLessonService.remove(myId,classId,lessonId);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/{id}/cover")
+	@Secured("TEACHER")
+	public ResponseEntity updateCover(@ModelAttribute UpdateCoverRequest request,@PathVariable(name="id")Long classId){
+		Long teacherId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+		try {
+			this.classRoomService.updateCover(request,classId,teacherId);
+		} catch (IOException e) {
+			throw new ApiException("couldn't update Cover",500);
+		}
+		return ResponseEntity.ok().build();
 	}
 
 }

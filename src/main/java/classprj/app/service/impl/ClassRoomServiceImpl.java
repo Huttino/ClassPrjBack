@@ -7,6 +7,7 @@ import classprj.app.exception.ApiException;
 import classprj.app.mapper.ClassRoomMapper;
 import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.ClassRoomStrippedDTO;
+import classprj.app.model.request.UpdateCoverRequest;
 import classprj.app.repository.ClassRoomRepository;
 import classprj.app.repository.MemberRepository;
 import classprj.app.repository.StudentRepository;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,6 +119,27 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                     throw new ApiException("Teacher not found", HttpStatus.NOT_FOUND.value());
                 });
         return toReturn;
+    }
+
+    @Override
+    public void updateCover(UpdateCoverRequest request, Long classId, Long teacherId){
+        if(request.getCover().isEmpty()){
+            throw new ApiException("can't update the cover,provided File is empty",HttpStatus.BAD_REQUEST.value());
+        }
+        byte[] toSave;
+        try {
+            toSave = request.getCover().getBytes();
+        } catch (IOException e) {
+            throw new ApiException("error in uploading the provided resource",500);
+        }
+        Optional<ClassRoom> optionalClassRoom=this.classRoomRepository.findById(classId);
+        optionalClassRoom.ifPresentOrElse(
+                (x)->{
+                    x.setCover(toSave);
+                    this.classRoomRepository.save(x);
+                },
+                ()->{throw new ApiException("classRoom not found",404);}
+        );
     }
 
 }

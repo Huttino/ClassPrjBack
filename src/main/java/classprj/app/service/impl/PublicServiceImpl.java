@@ -33,6 +33,7 @@ public class PublicServiceImpl implements PublicService {
     public byte[] getCover(Long classId) {
         Optional<ClassRoom> optional=this.classRoomRepository.findById(classId);
         if(optional.isEmpty())throw new ApiException("classRoom not found",404);
+        if(optional.get().getCover()==null) throw new ApiException("cover not present",204);
         return optional.get().getCover();
     }
 }
