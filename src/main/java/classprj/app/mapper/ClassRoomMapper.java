@@ -81,7 +81,7 @@ public class ClassRoomMapper {
 	}
 
 	public static PublicClassRoomDTO entityToPublicDTO(ClassRoom classRoom){
-		PublicClassRoomDTO toReturn=new PublicClassRoomDTO(classRoom.getId(), classRoom.getDescription(), classRoom.getClassName());
+		PublicClassRoomDTO toReturn=new PublicClassRoomDTO(classRoom.getId(), classRoom.getClassName(), classRoom.getDescription());
 		return toReturn;
 	}
 }

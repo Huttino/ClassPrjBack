@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins="*",maxAge = 3600)
@@ -33,5 +34,10 @@ public class PublicController {
         }catch(IOException e){
             throw new ApiException("IOError writing file to output stream");
         }
+    }
+
+    @GetMapping("/class/forLanding")
+    public ResponseEntity<List<PublicClassRoomDTO>> classRoomsForLanding(){
+        return ResponseEntity.ok(this.publicService.getClassRoomForLanding());
     }
 }
