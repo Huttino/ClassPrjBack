@@ -17,9 +17,8 @@ public class ClassRoom {
 	@Column(name = "name",nullable = false)
 	private String className;
 
-	@Lob
 	@Column(name="cover",nullable = true)
-	private byte[] cover;
+	private String pathCover;
 
 	@Column(name="description",nullable = false)
 	private String description;
@@ -41,10 +40,10 @@ public class ClassRoom {
 	public ClassRoom() {
 	}
 
-	public ClassRoom(Long id, String className, byte[] cover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
+	public ClassRoom(Long id, String className, String pathCover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
 		this.id = id;
 		this.className = className;
-		this.cover = cover;
+		this.pathCover = pathCover;
 		this.description = description;
 		this.creator = creator;
 		this.members = members;
@@ -123,12 +122,12 @@ public class ClassRoom {
 		return Objects.equals(id, other.id);
 	}
 
-	public byte[] getCover() {
-		return cover;
+	public String getPathCover() {
+		return pathCover;
 	}
 
-	public void setCover(byte[] cover) {
-		this.cover = cover;
+	public void setPathCover(String pathCover) {
+		this.pathCover = pathCover;
 	}
 
 	public String getDescription() {

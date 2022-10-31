@@ -26,6 +26,7 @@ public class PublicController {
     public ResponseEntity<PublicClassRoomDTO> classInfo(@PathVariable(name="id")Long classId){
         return ResponseEntity.ok(this.publicService.getClassRoom(classId));
     }
+    //TODO INCOMPLETE
     @GetMapping("/class/{id}/cover")
     public void downloadCover(@PathVariable("id")Long classId, HttpServletResponse response){
         try{
