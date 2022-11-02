@@ -43,7 +43,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
 
     @Override
     public ClassRoomDTO create(NewClassRoomRequest nr, Long teacherId) {
-        ClassRoom toSave = new ClassRoom(nr.getClassName());
+        ClassRoom toSave = new ClassRoom(nr.getClassName(),nr.getDescription());
         Optional<Teacher> teacher = this.teacherRepository.findById(teacherId);
         if (teacher.isEmpty()) throw new ApiException("Teacher not Found", HttpStatus.NOT_FOUND.value());
         else {

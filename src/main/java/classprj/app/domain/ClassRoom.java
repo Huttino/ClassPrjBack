@@ -44,6 +44,11 @@ public class ClassRoom {
 	public ClassRoom() {
 	}
 
+	public ClassRoom(String className, String description) {
+		this.className = className;
+		this.description = description;
+	}
+
 	public ClassRoom(Long id, String className, String pathCover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons, Set<Scope> scopes) {
 		this.id = id;
 		this.className = className;

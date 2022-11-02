@@ -10,15 +10,18 @@ public class NewClassRoomRequest {
 	@NotEmpty
 	private String className;
 
-	@NotNull
 	private List<Long> scopesId;
+	@NotNull
+	@NotEmpty
+	private String description;
 	
 	public NewClassRoomRequest() {
 	}
 
-	public NewClassRoomRequest(String className, List<Long> scopesId) {
+	public NewClassRoomRequest(String className, List<Long> scopesId,String description) {
 		this.className = className;
 		this.scopesId = scopesId;
+		this.description=description;
 	}
 
 	public String getClassName() {
@@ -27,6 +30,14 @@ public class NewClassRoomRequest {
 
 	public void setClassName(String className) {
 		this.className = className;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<Long> getScopesId() {

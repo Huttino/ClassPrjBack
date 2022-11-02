@@ -3,9 +3,12 @@ package classprj.app.service.impl;
 import classprj.app.domain.ClassRoom;
 import classprj.app.exception.ApiException;
 import classprj.app.mapper.ClassRoomMapper;
+import classprj.app.mapper.ScopeMapper;
 import classprj.app.model.dto.PublicClassRoomDTO;
+import classprj.app.model.dto.ScopeDto;
 import classprj.app.repository.ClassRoomRepository;
 import classprj.app.repository.MemberRepository;
+import classprj.app.repository.ScopeRepository;
 import classprj.app.service.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +27,12 @@ public class PublicServiceImpl implements PublicService {
 
     private final ClassRoomRepository classRoomRepository;
     private final MemberRepository memberRepository;
+    private final ScopeRepository scopeRepository;
     @Autowired
-    public PublicServiceImpl(ClassRoomRepository classRoomRepository,MemberRepository memberRepository) {
+    public PublicServiceImpl(ClassRoomRepository classRoomRepository,MemberRepository memberRepository,ScopeRepository scopeRepository) {
         this.classRoomRepository = classRoomRepository;
         this.memberRepository=memberRepository;
+        this.scopeRepository=scopeRepository;
     }
 
     @Override
@@ -71,5 +76,16 @@ public class PublicServiceImpl implements PublicService {
             toReturn.add(ClassRoomMapper.entityToPublicDTO(toGet.get(i)));
         }
         return toReturn;
+    }
+
+    @Override
+    public List<ScopeDto> getAllScopes() {
+        List<ScopeDto> scopes=new ArrayList<ScopeDto>();
+        this.scopeRepository.findAll().forEach(
+                x->{
+                    scopes.add(ScopeMapper.entityToDto(x));
+                }
+        );
+        return scopes;
     }
 }

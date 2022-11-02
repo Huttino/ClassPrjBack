@@ -2,6 +2,7 @@ package classprj.app.controller;
 
 import classprj.app.exception.ApiException;
 import classprj.app.model.dto.PublicClassRoomDTO;
+import classprj.app.model.dto.ScopeDto;
 import classprj.app.service.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,10 @@ public class PublicController {
     @GetMapping("/class/forLanding")
     public ResponseEntity<List<PublicClassRoomDTO>> classRoomsForLanding(){
         return ResponseEntity.ok(this.publicService.getClassRoomForLanding());
+    }
+
+    @GetMapping("/scope")
+    public ResponseEntity<List<ScopeDto>> getAllScopes(){
+        return ResponseEntity.ok(this.publicService.getAllScopes());
     }
 }

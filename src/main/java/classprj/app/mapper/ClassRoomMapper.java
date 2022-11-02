@@ -50,6 +50,7 @@ public class ClassRoomMapper {
 		toReturn.setUploadedDocuments(toSetDocument);
 		toReturn.setMembers(members);
 		ArrayList<VideoLessonDTO> toSet=new ArrayList<>();
+		if(classRoom.getLessons()!=null)
 		classRoom.getLessons().forEach(
 				x->toSet.add(VideoLessonMapper.entityToDTO(x))
 		);
