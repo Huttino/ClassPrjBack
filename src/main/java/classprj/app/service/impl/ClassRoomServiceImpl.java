@@ -2,17 +2,18 @@ package classprj.app.service.impl;
 
 import classprj.app.domain.ClassRoom;
 import classprj.app.domain.Member;
+import classprj.app.domain.Scope;
 import classprj.app.domain.Teacher;
 import classprj.app.exception.ApiException;
 import classprj.app.mapper.ClassRoomMapper;
 import classprj.app.mapper.FileSaver;
 import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.ClassRoomStrippedDTO;
+import classprj.app.model.dto.PublicClassRoomDTO;
+import classprj.app.model.request.NewClassRoomRequest;
+import classprj.app.model.request.ScopeFilter;
 import classprj.app.model.request.UpdateCoverRequest;
-import classprj.app.repository.ClassRoomRepository;
-import classprj.app.repository.MemberRepository;
-import classprj.app.repository.StudentRepository;
-import classprj.app.repository.TeacherRepository;
+import classprj.app.repository.*;
 import classprj.app.service.ClassRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ClassRoomServiceImpl implements ClassRoomService {
@@ -31,22 +30,29 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     private final ClassRoomRepository classRoomRepository;
     private final StudentRepository studentRepository;
     private final MemberRepository memberRepository;
+    private final ScopeRepository scopeRepository;
 
     @Autowired
-    public ClassRoomServiceImpl(ClassRoomRepository classRoomRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, MemberRepository memberRepository) {
+    public ClassRoomServiceImpl(ClassRoomRepository classRoomRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, MemberRepository memberRepository,ScopeRepository scopeRepository) {
         this.classRoomRepository = classRoomRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.memberRepository = memberRepository;
+        this.scopeRepository = scopeRepository;
     }
 
     @Override
-    public ClassRoomDTO create(String name, Long teacherId) {
-        ClassRoom toSave = new ClassRoom(name);
+    public ClassRoomDTO create(NewClassRoomRequest nr, Long teacherId) {
+        ClassRoom toSave = new ClassRoom(nr.getClassName());
         Optional<Teacher> teacher = this.teacherRepository.findById(teacherId);
         if (teacher.isEmpty()) throw new ApiException("Teacher not Found", HttpStatus.NOT_FOUND.value());
         else {
             toSave.setCreator(teacher.get());
+            toSave.setScopes(new HashSet<Scope>());
+            List<Scope> scopes=this.scopeRepository.findAllById(nr.getScopesId());
+            scopes.forEach(x->{
+                toSave.getScopes().add(x);
+            });
             ClassRoomDTO classRoomDTO=ClassRoomMapper.entityToDtoTeacher(classRoomRepository.save(toSave));
             try {
                 FileSaver.createDirs(classRoomDTO.getId());
@@ -154,6 +160,22 @@ public class ClassRoomServiceImpl implements ClassRoomService {
                     throw new ApiException("classRoom not found", 404);
                 }
         );
+    }
+
+    @Override
+    public Set<PublicClassRoomDTO> findByScopes(ScopeFilter filter) {
+        Set<PublicClassRoomDTO> toReturn=new HashSet<>();
+        List<Scope> scopes=this.scopeRepository.findAllById(filter.getScopesId());
+        scopes.forEach(
+                x->{
+                    x.getClassRooms().forEach(
+                            y->{
+                                toReturn.add(ClassRoomMapper.entityToPublicDTO(y));
+                            }
+                    );
+                }
+        );
+        return toReturn;
     }
 
 }

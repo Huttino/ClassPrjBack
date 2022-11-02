@@ -1,33 +1,21 @@
 package classprj.app.mapper;
 
-import classprj.app.exception.ApiException;
-import classprj.app.model.dto.DocumentDTO;
-import classprj.app.model.request.UploadDocumentWithData;
+import classprj.app.domain.ClassRoom;
 import classprj.app.domain.Document;
-import org.springframework.util.StringUtils;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
+import classprj.app.domain.Teacher;
+import classprj.app.model.dto.DocumentDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentMapper {
-	public static List<Document> RequestToEntity(UploadDocumentWithData toAdapt){
-		List<Document> toReturn=new ArrayList<Document>();
-		toAdapt.getFile().forEach((x)->{
-			Document toBeAdded=new Document();
-			try {
-				toBeAdded.setFile(x.getBytes());
-			} catch (IOException e) {
-				throw new ApiException("error during the upload of the file");
-			}
-			toBeAdded.setNotes(toAdapt.getNotes());
-			toBeAdded.setTitle(StringUtils.cleanPath(x.getOriginalFilename()));
-			toBeAdded.setType(x.getContentType());
-			toBeAdded.setDateOfUpload(LocalDateTime.now(ZoneId.systemDefault()));
-			toReturn.add(toBeAdded);
-		});
+	public static Document RequestToEntity(MultipartFile x , String pathFile, String notes, ClassRoom uploadedTo, Teacher uploader){
+		Document toReturn=new Document();
+		toReturn.setTitle(x.getOriginalFilename().split(".")[0]);
+		toReturn.setType(x.getContentType());
+		toReturn.setRelatedTo(null);
+		toReturn.setNotes(notes);
+		toReturn.setUploadedTo(uploadedTo);
+		toReturn.setUploadedBy(uploader);
+		toReturn.setPathFile(pathFile);
 		return toReturn;
 	}
 

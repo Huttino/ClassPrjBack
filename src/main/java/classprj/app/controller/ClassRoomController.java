@@ -1,10 +1,7 @@
 package classprj.app.controller;
 
 import classprj.app.exception.ApiException;
-import classprj.app.model.dto.ClassRoomDTO;
-import classprj.app.model.dto.ClassRoomStrippedDTO;
-import classprj.app.model.dto.StudentInClass;
-import classprj.app.model.dto.VideoLessonDTO;
+import classprj.app.model.dto.*;
 import classprj.app.model.request.*;
 import classprj.app.security.PrincipalUtils;
 import classprj.app.service.ClassRoomService;
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
@@ -48,7 +46,7 @@ public class ClassRoomController {
 	@PostMapping("")
 	public ResponseEntity<ClassRoomDTO> Create(@Valid @RequestBody NewClassRoomRequest nc){
 		Long teacherId =PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
-		return ResponseEntity.ok().body(this.classRoomService.create(nc.getClassname(),teacherId));
+		return ResponseEntity.ok().body(this.classRoomService.create(nc,teacherId));
 	}
 
 	@Secured("TEACHER")
@@ -128,6 +126,11 @@ public class ClassRoomController {
 			throw new ApiException("couldn't update Cover",500);
 		}
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/scopes")
+	public ResponseEntity<Set<PublicClassRoomDTO>> findByScopes(@RequestBody ScopeFilter filter){
+		return ResponseEntity.ok( this.classRoomService.findByScopes(filter));
 	}
 
 }

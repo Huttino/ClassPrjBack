@@ -1,7 +1,11 @@
 package classprj.app.service.impl;
 
+import classprj.app.domain.ClassRoom;
+import classprj.app.domain.Document;
+import classprj.app.domain.Teacher;
 import classprj.app.exception.ApiException;
 import classprj.app.mapper.DocumentMapper;
+import classprj.app.mapper.FileSaver;
 import classprj.app.model.dto.DocumentDTO;
 import classprj.app.model.request.UploadDocumentWithData;
 import classprj.app.repository.ClassRoomRepository;
@@ -9,13 +13,14 @@ import classprj.app.repository.DocumentRepository;
 import classprj.app.repository.TeacherRepository;
 import classprj.app.repository.VideoLessonRepository;
 import classprj.app.service.DocumentService;
-import classprj.app.domain.ClassRoom;
-import classprj.app.domain.Document;
-import classprj.app.domain.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,18 +46,34 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public List<DocumentDTO> upload(UploadDocumentWithData toUpload, Long classId, String username) {
-        List<Document> toSave=DocumentMapper.RequestToEntity(toUpload);
+        List<Document> toSave=new ArrayList<>();
         Optional<Teacher> uploader=this.teacherRepository.findByUsername(username);
         if(uploader.isEmpty())throw new ApiException("Teacher not found", HttpStatus.NOT_FOUND.value());
         Optional<ClassRoom> uploadedTo=this.classRoomRepository.findById(classId);
         if(uploadedTo.isEmpty()) throw new ApiException("ClassRoom not found",HttpStatus.NOT_FOUND.value());
-        toSave.forEach(x->{
-            x.setUploadedBy(uploader.get());
-            x.setUploadedTo(uploadedTo.get());
-            x.setNotes(toUpload.getNotes());
-        });
-        List<DocumentDTO> savedDocuments=new ArrayList<>();
-        toSave.forEach(x-> savedDocuments.add(DocumentMapper.entityToDTO( this.documentRepository.save(x))));
+        toUpload.getFile().forEach(
+                x->{
+                    try {
+                        toSave.add(DocumentMapper.RequestToEntity(
+                                x,
+                                FileSaver.saveFile(uploadedTo.get().getId(),true,x),
+                                toUpload.getNotes(),
+                                uploadedTo.get(),
+                                uploader.get()));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                }
+        );
+
+        List<DocumentDTO> savedDocuments=new ArrayList<DocumentDTO>();
+        this.documentRepository.saveAll(toSave).forEach(
+                x->{
+                    savedDocuments.add(DocumentMapper.entityToDTO(x));
+                }
+            );
         return savedDocuments;
     }
 
@@ -61,6 +82,8 @@ public class DocumentServiceImpl implements DocumentService {
         Optional<Document> toBeDeleted= this.documentRepository.findById(documentId);
         if (toBeDeleted.isEmpty())throw new ApiException("Document not found",HttpStatus.NOT_FOUND.value());
         Document toDelete=toBeDeleted.get();
+        File toCanc=new File(toDelete.getPathFile());
+        toCanc.delete();
         if (toDelete.getUploadedBy().getUsername().equals(username)) {
             toDelete.getRelatedTo().forEach(
                     x-> {
@@ -76,16 +99,20 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public byte[] getFile(Long id,Long userid) {
-        Document toReturn =this.documentRepository.findById(id).orElseThrow(()->{
+    public byte[] getFile(Long id,Long userid){
+        Document from =this.documentRepository.findById(id).orElseThrow(()->{
             throw new ApiException("document not Found",HttpStatus.NOT_FOUND.value());
         });
-        if(!toReturn.getUploadedBy().getId().equals(userid)){
-            if(toReturn.getUploadedTo().getMembers().stream().noneMatch(x-> x.getId().equals(userid))){
+        if(!from.getUploadedBy().getId().equals(userid)){
+            if(from.getUploadedTo().getMembers().stream().noneMatch(x-> x.getId().equals(userid))){
                 throw new ApiException("You don't have access to this document",HttpStatus.UNAUTHORIZED.value());
             }
         }
-        return toReturn.getFile();
+        try {
+            return Files.readAllBytes(Paths.get(from.getPathFile()));
+        } catch (IOException e) {
+            throw new ApiException("couldn't retrieve the File",500);
+        }
     }
 
 }

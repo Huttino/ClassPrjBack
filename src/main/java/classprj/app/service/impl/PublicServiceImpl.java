@@ -7,20 +7,11 @@ import classprj.app.model.dto.PublicClassRoomDTO;
 import classprj.app.repository.ClassRoomRepository;
 import classprj.app.repository.MemberRepository;
 import classprj.app.service.PublicService;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.imageio.stream.FileImageOutputStream;
-import java.awt.*;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,7 +46,6 @@ public class PublicServiceImpl implements PublicService {
         if(optional.isEmpty())throw new ApiException("classRoom not found",404);
         String pathCover=optional.get().getPathCover();
         if(pathCover==null) pathCover="E:\\Desktop\\ContentForClassPrj\\standardCover.jpg";
-        FileReader reader;
         try {
             return Files.readAllBytes(Paths.get(pathCover));
         } catch (FileNotFoundException e) {

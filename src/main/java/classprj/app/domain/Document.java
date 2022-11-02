@@ -19,9 +19,8 @@ public class Document {
 	@Column(name="type",nullable = false)
 	private String type;
 	
-	@Column (name="file",nullable = false)
-	@Lob
-	private byte[] file;
+	@Column (name="pathFile",nullable = false)
+	private String pathFile;
 	
 	@Column(name="notes")
 	private String notes;
@@ -44,11 +43,11 @@ public class Document {
 	public Document() {
 	}
 
-	public Document(Long id, String title, String type, byte[] file, String notes, LocalDateTime dateOfUpload, Teacher uploadedBy, ClassRoom uploadedTo, List<VideoLesson> relatedTo) {
+	public Document(Long id, String title, String type, String pathFile, String notes, LocalDateTime dateOfUpload, Teacher uploadedBy, ClassRoom uploadedTo, List<VideoLesson> relatedTo) {
 		this.id = id;
 		this.title = title;
 		this.type = type;
-		this.file = file;
+		this.pathFile = pathFile;
 		this.notes = notes;
 		this.dateOfUpload = dateOfUpload;
 		this.uploadedBy = uploadedBy;
@@ -73,12 +72,12 @@ public class Document {
 		this.title = title;
 	}
 
-	public byte[] getFile() {
-		return file;
+	public String getPathFile() {
+		return pathFile;
 	}
 
-	public void setFile(byte[] file){
-		this.file = file;
+	public void setPathFile(String pathFile){
+		this.pathFile = pathFile;
 	}
 
 	public String getNotes() {
