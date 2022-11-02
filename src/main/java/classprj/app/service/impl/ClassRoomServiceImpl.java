@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,6 +140,10 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         optionalClassRoom.ifPresentOrElse(
                 (x) -> {
                     try {
+                        if (x.getPathCover()!=null){
+                            File fileToDelete=new File(x.getPathCover());
+                            fileToDelete.delete();
+                        }
                         x.setPathCover(FileSaver.saveFile(classId, false, toSave));
                     } catch (IOException e) {
                         throw new ApiException(e.toString());

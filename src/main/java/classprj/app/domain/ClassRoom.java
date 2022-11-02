@@ -3,6 +3,7 @@ package classprj.app.domain;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="ClassRoom",uniqueConstraints = {
@@ -35,12 +36,15 @@ public class ClassRoom {
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "classRoom")
 	private List<VideoLesson> lessons;
-	
+
+	@ManyToMany(cascade = CascadeType.DETACH,fetch = FetchType.LAZY)
+	@JoinTable(joinColumns = @JoinColumn(name="classRoomId"),inverseJoinColumns =@JoinColumn(name="scopeId"))
+	Set<Scope> scopes;
 
 	public ClassRoom() {
 	}
 
-	public ClassRoom(Long id, String className, String pathCover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons) {
+	public ClassRoom(Long id, String className, String pathCover, String description, Teacher creator, List<Member> members, List<Document> documents, List<VideoLesson> lessons, Set<Scope> scopes) {
 		this.id = id;
 		this.className = className;
 		this.pathCover = pathCover;
@@ -49,6 +53,7 @@ public class ClassRoom {
 		this.members = members;
 		this.documents = documents;
 		this.lessons = lessons;
+		this.scopes = scopes;
 	}
 
 	public ClassRoom(String className) {
