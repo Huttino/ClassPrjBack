@@ -6,16 +6,19 @@ import classprj.app.domain.Teacher;
 import classprj.app.model.dto.DocumentDTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+
 public class DocumentMapper {
 	public static Document RequestToEntity(MultipartFile x , String pathFile, String notes, ClassRoom uploadedTo, Teacher uploader){
 		Document toReturn=new Document();
-		toReturn.setTitle(x.getOriginalFilename().split(".")[0]);
+		toReturn.setTitle(x.getOriginalFilename());
 		toReturn.setType(x.getContentType());
 		toReturn.setRelatedTo(null);
 		toReturn.setNotes(notes);
 		toReturn.setUploadedTo(uploadedTo);
 		toReturn.setUploadedBy(uploader);
 		toReturn.setPathFile(pathFile);
+		toReturn.setDateOfUpload(LocalDateTime.now());
 		return toReturn;
 	}
 

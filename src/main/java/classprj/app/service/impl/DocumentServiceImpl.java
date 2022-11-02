@@ -63,8 +63,6 @@ public class DocumentServiceImpl implements DocumentService {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
         );
 
