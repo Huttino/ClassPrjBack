@@ -1,8 +1,10 @@
 package classprj.app.mapper;
 
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,5 +26,10 @@ public class FileSaver {
     public static void createDirs(Long classId) throws IOException {
         Path path=Paths.get(classRoomDataPath+"/"+classId+"/documents");
         Files.createDirectories(path);
+    }
+
+    public static void deleteDir(Long classId) throws IOException{
+        Path path=Paths.get(classRoomDataPath+"/"+classId);
+        FileUtils.deleteDirectory(new File(classRoomDataPath+"/"+classId));
     }
 }

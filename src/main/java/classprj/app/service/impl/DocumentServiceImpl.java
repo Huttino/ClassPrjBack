@@ -106,6 +106,7 @@ public class DocumentServiceImpl implements DocumentService {
                 throw new ApiException("You don't have access to this document",HttpStatus.UNAUTHORIZED.value());
             }
         }
+
         try {
             return Files.readAllBytes(Paths.get(from.getPathFile()));
         } catch (IOException e) {

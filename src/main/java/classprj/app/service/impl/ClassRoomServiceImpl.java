@@ -48,7 +48,7 @@ public class ClassRoomServiceImpl implements ClassRoomService {
         if (teacher.isEmpty()) throw new ApiException("Teacher not Found", HttpStatus.NOT_FOUND.value());
         else {
             toSave.setCreator(teacher.get());
-            toSave.setScopes(new HashSet<Scope>());
+            toSave.setScopes(new HashSet<>());
             List<Scope> scopes=this.scopeRepository.findAllById(nr.getScopesId());
             scopes.forEach(x->{
                 toSave.getScopes().add(x);
@@ -95,6 +95,11 @@ public class ClassRoomServiceImpl implements ClassRoomService {
             throw new ApiException("You can't delete a Classroom you didn't create", HttpStatus.UNAUTHORIZED.value());
         } else if (toDelete.get().getMembers() != null && toDelete.get().getMembers().size() > 0) {
             throw new ApiException("you can only delete empty classrooms", HttpStatus.BAD_REQUEST.value());
+        }
+        try{
+            FileSaver.deleteDir(classRoomId);
+        } catch (IOException e) {
+            throw new ApiException("couldn't remove classRoom Data Directory",500);
         }
         classRoomRepository.delete(toDelete.get());
     }

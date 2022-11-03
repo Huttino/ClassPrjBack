@@ -5,6 +5,7 @@ import classprj.app.domain.Teacher;
 import classprj.app.model.dto.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class ClassRoomMapper {
@@ -78,11 +79,28 @@ public class ClassRoomMapper {
 		toReturn.setNumberOfLessons(x.getLessons().size());
 		toReturn.setNumberOfMembers(x.getMembers().size());
 		toReturn.setNumberOfDocuments(x.getDocuments().size());
+		toReturn.setScopesId(new HashSet<Long>());
+		if(x.getScopes()!=null){
+			x.getScopes().forEach(
+					y->{
+						toReturn.getScopesId().add(y.getId());
+					}
+			);
+		}
 		return toReturn;
 	}
 
 	public static PublicClassRoomDTO entityToPublicDTO(ClassRoom classRoom){
-		PublicClassRoomDTO toReturn=new PublicClassRoomDTO(classRoom.getId(), classRoom.getClassName(), classRoom.getDescription());
+		PublicClassRoomDTO toReturn=new PublicClassRoomDTO();
+		toReturn.setId(classRoom.getId());
+		toReturn.setTitle(classRoom.getClassName());
+		toReturn.setDescription(classRoom.getDescription());
+		if(classRoom.getScopes().size()>0){
+			List<ScopeDto> scopes=new ArrayList<ScopeDto>();
+			classRoom.getScopes().forEach(x->scopes.add(ScopeMapper.entityToDto(x)));
+			toReturn.setScopes(scopes);
+		}
+
 		return toReturn;
 	}
 }

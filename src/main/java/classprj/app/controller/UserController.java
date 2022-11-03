@@ -4,6 +4,7 @@ package classprj.app.controller;
 import classprj.app.exception.ApiException;
 import classprj.app.mapper.TeacherMapper;
 import classprj.app.model.dto.ClassRoomDTO;
+import classprj.app.model.dto.PublicClassRoomDTO;
 import classprj.app.model.dto.UserDTO;
 import classprj.app.model.ROLEVALUE;
 import classprj.app.model.request.UpdatePasswordRequest;
@@ -92,6 +93,14 @@ public class UserController {
     public ResponseEntity<List<ClassRoomDTO>> getMyClasses(){
         Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
         List<ClassRoomDTO> toReturn= this.studentService.getClasses(myId);
+        return ResponseEntity.ok(toReturn);
+    }
+
+    @GetMapping("/recommendation")
+    @Secured("STUDENT")
+    public ResponseEntity<List<PublicClassRoomDTO>> getRecommendation(){
+        Long myId=PrincipalUtils.loggerUserIdFromContext(SecurityContextHolder.getContext());
+        List<PublicClassRoomDTO> toReturn=studentService.getRecommendation(myId);
         return ResponseEntity.ok(toReturn);
     }
 

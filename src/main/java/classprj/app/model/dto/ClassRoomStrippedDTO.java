@@ -1,5 +1,7 @@
 package classprj.app.model.dto;
 
+import java.util.Set;
+
 public class ClassRoomStrippedDTO {
     private Long id;
     private String className;
@@ -9,10 +11,12 @@ public class ClassRoomStrippedDTO {
     private Integer numberOfLessons;
     private boolean graded;
 
+    private Set<Long> scopesId;
+
     public ClassRoomStrippedDTO() {
     }
 
-    public ClassRoomStrippedDTO(Long id, String className, String creator, Integer numberOfDocuments, Integer numberOfMembers, Integer numberOfLessons, boolean graded) {
+    public ClassRoomStrippedDTO(Long id, String className, String creator, Integer numberOfDocuments, Integer numberOfMembers, Integer numberOfLessons, boolean graded,Set<Long> scopesId) {
         this.id = id;
         this.className = className;
         this.creator = creator;
@@ -20,6 +24,7 @@ public class ClassRoomStrippedDTO {
         this.numberOfMembers = numberOfMembers;
         this.numberOfLessons = numberOfLessons;
         this.graded = graded;
+        this.scopesId=scopesId;
     }
 
     public Long getId() {
@@ -76,5 +81,13 @@ public class ClassRoomStrippedDTO {
 
     public void setGraded(boolean graded) {
         this.graded = graded;
+    }
+
+    public Set<Long> getScopesId() {
+        return scopesId;
+    }
+
+    public void setScopesId(Set<Long> scopesId) {
+        this.scopesId = scopesId;
     }
 }

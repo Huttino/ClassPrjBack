@@ -47,4 +47,5 @@ public class PublicController {
     public ResponseEntity<List<ScopeDto>> getAllScopes(){
         return ResponseEntity.ok(this.publicService.getAllScopes());
     }
+
 }
