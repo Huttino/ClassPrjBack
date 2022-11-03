@@ -50,7 +50,7 @@ public class PublicServiceImpl implements PublicService {
         Optional<ClassRoom> optional=this.classRoomRepository.findById(classId);
         if(optional.isEmpty())throw new ApiException("classRoom not found",404);
         String pathCover=optional.get().getPathCover();
-        if(pathCover==null) pathCover="E:\\Desktop\\ContentForClassPrj\\standardCover.jpg";
+        if(pathCover==null) pathCover="/Users/Huttino/Desktop/ClassRoomPrjData/standardCover.jpg";
         try {
             return Files.readAllBytes(Paths.get(pathCover));
         } catch (FileNotFoundException e) {
