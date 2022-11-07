@@ -4,7 +4,6 @@ import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.ClassRoomStrippedDTO;
 import classprj.app.model.dto.PublicClassRoomDTO;
 import classprj.app.model.request.NewClassRoomRequest;
-import classprj.app.model.request.ScopeFilter;
 import classprj.app.model.request.UpdateCoverRequest;
 
 import java.io.IOException;
@@ -24,5 +23,5 @@ public interface ClassRoomService {
 
     void updateCover(UpdateCoverRequest request, Long classId, Long teacherId) throws IOException;
 
-	Set<PublicClassRoomDTO> findByScopes(ScopeFilter filter);
+	Set<PublicClassRoomDTO> findByScopes(Long classId);
 }

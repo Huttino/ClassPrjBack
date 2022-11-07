@@ -11,7 +11,6 @@ import classprj.app.model.dto.ClassRoomDTO;
 import classprj.app.model.dto.ClassRoomStrippedDTO;
 import classprj.app.model.dto.PublicClassRoomDTO;
 import classprj.app.model.request.NewClassRoomRequest;
-import classprj.app.model.request.ScopeFilter;
 import classprj.app.model.request.UpdateCoverRequest;
 import classprj.app.repository.*;
 import classprj.app.service.ClassRoomService;
@@ -168,18 +167,22 @@ public class ClassRoomServiceImpl implements ClassRoomService {
     }
 
     @Override
-    public Set<PublicClassRoomDTO> findByScopes(ScopeFilter filter) {
+    public Set<PublicClassRoomDTO> findByScopes(Long classId) {
         Set<PublicClassRoomDTO> toReturn=new HashSet<>();
-        List<Scope> scopes=this.scopeRepository.findAllById(filter.getScopesId());
-        scopes.forEach(
-                x->{
-                    x.getClassRooms().forEach(
-                            y->{
-                                toReturn.add(ClassRoomMapper.entityToPublicDTO(y));
-                            }
-                    );
-                }
-        );
+       this.classRoomRepository.findById(classId).ifPresent(
+               x->
+               {
+                   x.getScopes().forEach(
+                           y->{
+                               y.getClassRooms().forEach(z->{
+                                   if(z.getId()!=classId){
+                                       toReturn.add(ClassRoomMapper.entityToPublicDTO(z));
+                                   }
+                               });
+                           }
+                   );
+               }
+       );
         return toReturn;
     }
 

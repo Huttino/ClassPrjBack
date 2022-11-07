@@ -128,9 +128,10 @@ public class ClassRoomController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/scopes")
-	public ResponseEntity<Set<PublicClassRoomDTO>> findByScopes(@RequestBody ScopeFilter filter){
-		return ResponseEntity.ok( this.classRoomService.findByScopes(filter));
+	@GetMapping("/recommendation/{id}")
+	@Secured("STUDENT")
+	public ResponseEntity<Set<PublicClassRoomDTO>> findByScopes(@PathVariable(name = "id") Long classId){
+		return ResponseEntity.ok( this.classRoomService.findByScopes(classId));
 	}
 
 }

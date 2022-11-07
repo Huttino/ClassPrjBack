@@ -1,6 +1,7 @@
 package classprj.app.model.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PublicClassRoomDTO {
     private Long id;
@@ -48,5 +49,18 @@ public class PublicClassRoomDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PublicClassRoomDTO that = (PublicClassRoomDTO) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }
